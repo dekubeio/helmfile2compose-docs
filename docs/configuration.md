@@ -174,7 +174,7 @@ Previously `caddy_tls_internal` (top-level). Migrated automatically on first run
 
 ### `distribution_version`
 
-Pin the distribution version for [dekube-manager](dekube-manager.md). Ignored by helmfile2compose itself.
+Pin the distribution version for [dekube-manager](https://manager.dekube.io/docs/). Ignored by helmfile2compose itself.
 
 ```yaml
 distribution_version: v3.1.0
@@ -203,7 +203,7 @@ depends:
 
 Bare names pull the latest release. Pin with `==version` for reproducibility (recommended — see [Your project](getting-started.md#recommended-workflow)).
 
-See [dekube-manager — declarative dependencies](dekube-manager.md#declarative-dependencies) for override behavior and details.
+See [dekube-manager — declarative dependencies](https://manager.dekube.io/docs/#declarative) for override behavior and details.
 
 ### `ingress_types`
 

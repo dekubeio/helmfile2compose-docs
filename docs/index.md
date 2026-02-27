@@ -30,7 +30,7 @@ See [Getting started](getting-started.md) for the full setup guide.
 
 - **[Getting started](getting-started.md)** — installation, first run, adapting helmfile2compose for your own helmfile
 - **[Configuration](configuration.md)** — `dekube.yaml` deep dive: volumes, overrides, secrets, replacements
-- **[dekube-manager](dekube-manager.md)** — installing helmfile2compose and extensions via the package manager
+- **[dekube-manager](https://manager.dekube.io/docs/)** — installing helmfile2compose and extensions via the package manager
 - **[Operations](operations.md)** — day-to-day: updating, data management, troubleshooting
 - **[Advanced](advanced.md)** — cohabiting with existing infrastructure, multiple projects, disabling Caddy
 - **[Known workarounds](known-workarounds/index.md)** — sushi recipes for the tentacles that don't fit

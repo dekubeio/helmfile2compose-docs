@@ -22,7 +22,7 @@ git pull
 docker compose up -d
 ```
 
-Or if your project uses [dekube-manager](dekube-manager.md) directly (the package manager that downloads and runs helmfile2compose):
+Or if your project uses [dekube-manager](https://manager.dekube.io/docs/) directly (the package manager that downloads and runs helmfile2compose):
 
 ```bash
 git pull

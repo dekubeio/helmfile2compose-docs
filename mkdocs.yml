@@ -33,7 +33,7 @@ nav:
   - Home: index.md
   - Getting started: getting-started.md
   - Configuration: configuration.md
-  - dekube-manager: dekube-manager.md
+  - dekube-manager: https://manager.dekube.io/docs/
   - Operations: operations.md
   - Advanced: advanced.md
   - Known workarounds:

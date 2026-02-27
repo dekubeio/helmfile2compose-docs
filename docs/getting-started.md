@@ -61,7 +61,7 @@ extensions/
 └── cert_manager.py        # from dekube-converter-cert-manager
 ```
 
-That's it. No package manager needed at this stage — [dekube-manager](dekube-manager.md) is for later, when you ship a `generate-compose.sh` to your users (see [Recommended workflow](#recommended-workflow)).
+That's it. No package manager needed at this stage — [dekube-manager](https://manager.dekube.io/docs/) is for later, when you ship a `generate-compose.sh` to your users (see [Recommended workflow](#recommended-workflow)).
 
 ## Preparing your helmfile
 
@@ -160,7 +160,7 @@ Compatibility was covered [above](#before-you-start-ingress-controller). This se
 | **Nginx** | `rewrite-target`, `backend-protocol`, `enable-cors`, `proxy-body-size`, `configuration-snippet` (partial) |
 | **Traefik** | `router.tls`, standard Ingress path rules. No middleware CRD support. |
 
-HAProxy is built into the helmfile2compose distribution. Nginx and Traefik are extensions — install them with [dekube-manager](dekube-manager.md) or drop the `.py` file in your `extensions/` directory.
+HAProxy is built into the helmfile2compose distribution. Nginx and Traefik are extensions — install them with [dekube-manager](https://manager.dekube.io/docs/) or drop the `.py` file in your `extensions/` directory.
 
 ### Custom ingress class names
 
