@@ -1,6 +1,6 @@
 site_name: helmfile2compose
 site_url: https://helmfile2compose.dekube.io/docs/
-site_description: "The helmfile2compose distribution — converting K8s manifests to compose.yml. Sanity may or may not be included."
+site_description: "The helmfile2compose distribution — generate compose.yml from your Kubernetes manifests. One source of truth, no second stack to maintain."
 repo_url: https://github.com/dekubeio/helmfile2compose
 repo_name: dekubeio/helmfile2compose
 

@@ -1,6 +1,6 @@
 # helmfile2compose
 
-The distribution that converts Kubernetes manifests into a working `docker compose` stack. One script, one config file, one command.
+The distribution that generates a working `docker compose` stack from your Kubernetes manifests. One source of truth, one script, one command.
 
 > *He who renders the celestial into the mundane does not ascend — he merely ensures that both realms now share his suffering equally.*
 >
