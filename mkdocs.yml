@@ -1,0 +1,57 @@
+site_name: helmfile2compose
+site_url: https://helmfile2compose.dekube.io/docs/
+site_description: "The helmfile2compose distribution — converting K8s manifests to compose.yml. Sanity may or may not be included."
+repo_url: https://github.com/dekubeio/helmfile2compose
+repo_name: dekubeio/helmfile2compose
+
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.sections
+    - content.code.copy
+    - search.suggest
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Configuration: configuration.md
+  - dekube-manager: dekube-manager.md
+  - Operations: operations.md
+  - Advanced: advanced.md
+  - Known workarounds:
+      - Overview: known-workarounds/index.md
+      - Common charts: known-workarounds/common-charts.md
+      - kube-prometheus-stack: known-workarounds/kube-prometheus-stack.md
+  - Glossary: glossary.md
+  - Limitations: limitations.md
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - toc:
+      permalink: true
+
+copyright: Public domain. No rights reserved. No tentacle returns. (Built with <a href="https://squidfunk.github.io/mkdocs-material/">MkDocs Material</a>)

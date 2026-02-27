@@ -24,7 +24,7 @@
   <a class="brand" href="/">helmfile2compose<span class="sep">&mdash;</span>Devolving begins and began here</a>
   <nav>
     <a href="https://github.com/dekubeio/helmfile2compose" target="_blank">GitHub</a>
-    <a href="https://docs.dekube.io" target="_blank">Documentation</a>
+    <a href="/docs/">Documentation</a>
   </nav>
 </header>
 
@@ -61,13 +61,21 @@
     <div class="terminal-body">
       <div class="terminal-panel active" data-panel="direct">
         <span class="comment"># get the latest build and run it</span>
-        <div class="line"><span class="prompt">$ </span><span class="cmd">curl -fsSL helmfile2compose.dekube.io/get -o helmfile2compose.py</span></div>
+        <div class="line"><span class="prompt">$ </span><span class="cmd">curl -fsSL helmfile2compose.dekube.io/get | sh</span></div>
+        <span class="comment"># or download directly:</span>
+        <div class="line"><span class="prompt">$ </span><span class="cmd">curl -fsSL -o helmfile2compose.py \</span></div>
+        <div class="line"><span class="cmd">    github.com/dekubeio/helmfile2compose/releases/latest/download/helmfile2compose.py</span></div>
+        <div class="line">&nbsp;</div>
         <div class="line"><span class="prompt">$ </span><span class="cmd">python helmfile2compose.py -e local</span></div>
         <div class="line"><span class="prompt">$ </span><span class="cmd">docker compose up -d</span></div>
       </div>
       <div class="terminal-panel" data-panel="manager">
         <span class="comment"># or use the manager (handles extensions too)</span>
-        <div class="line"><span class="prompt">$ </span><span class="cmd">curl -fsSL manager.dekube.io/get -o dekube-manager.py</span></div>
+        <div class="line"><span class="prompt">$ </span><span class="cmd">curl -fsSL manager.dekube.io/get | sh</span></div>
+        <span class="comment"># or download directly:</span>
+        <div class="line"><span class="prompt">$ </span><span class="cmd">curl -fsSL -o dekube-manager.py \</span></div>
+        <div class="line"><span class="cmd">    raw.githubusercontent.com/dekubeio/dekube-manager/main/dekube-manager.py</span></div>
+        <div class="line">&nbsp;</div>
         <div class="line"><span class="prompt">$ </span><span class="cmd">python dekube-manager.py run -e local</span></div>
         <div class="line"><span class="prompt">$ </span><span class="cmd">docker compose up -d</span></div>
       </div>
@@ -163,8 +171,8 @@
         <span>Repository</span>
         <span class="arrow">&rarr;</span>
       </a>
-      <a href="https://docs.dekube.io/maintainer/" target="_blank">
-        <span>Maintainer docs</span>
+      <a href="/docs/">
+        <span>Documentation</span>
         <span class="arrow">&rarr;</span>
       </a>
       <a href="https://github.com/dekubeio/dekube-engine" target="_blank">
@@ -180,7 +188,7 @@
 </div>
 
 <footer class="subpage-footer">
-  <p class="copyright">&copy; dekube project</p>
+  <p class="copyright">&copy; helmfile2compose is part of the <a href="https://dekube.io">dekube</a> project</p>
 </footer>
 
 <script src="https://dekube.io/tabs.js"></script>
