@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+echo "Downloading helmfile2compose.py..."
+curl -fsSL "https://github.com/dekubeio/helmfile2compose/releases/latest/download/helmfile2compose.py" -o helmfile2compose.py
+echo "Done. Run: python3 helmfile2compose.py --help"
