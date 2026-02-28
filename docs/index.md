@@ -42,7 +42,7 @@ See [Getting started](getting-started.md) for the full setup guide.
 
 - **[stoatchat-platform](https://github.com/baptisterajaut/stoatchat-platform)** — 15 services. Chat platform (Revolt rebranded).
 - **[lasuite-platform](https://github.com/baptisterajaut/lasuite-platform)** — 22 services + 11 init jobs. Collaborative suite (La Suite Num.).
-- **[mijn-bureau-infra](https://github.com/numerique-gouv/mijn-bureau-infra)** — ~30 services. Dutch government digital workplace. Requires `nginx` and `bitnami` extensions.
+- **[mijn-bureau-infra](https://github.com/MinBZK/mijn-bureau-infra)** — ~30 services. Dutch government digital workplace. Not officially supported, vaguely tested, and would mostly work. Requires `nginx` and `bitnami` extensions.
 
 ## The ecosystem
 
