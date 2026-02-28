@@ -1,6 +1,6 @@
 site_name: helmfile2compose
 site_url: https://helmfile2compose.dekube.io/docs/
-site_description: "The helmfile2compose distribution — generate compose.yml from your Kubernetes manifests. One source of truth, no second stack to maintain."
+site_description: "The helmfile2compose distribution — generate compose.yml from your Kubernetes manifests. Same charts, same values, no second stack to maintain."
 repo_url: https://github.com/dekubeio/helmfile2compose
 repo_name: dekubeio/helmfile2compose
 
@@ -35,6 +35,7 @@ nav:
   - Configuration: configuration.md
   - dekube-manager: https://manager.dekube.io/docs/
   - Operations: operations.md
+  - Troubleshooting: troubleshooting.md
   - Advanced: advanced.md
   - Known workarounds:
       - Overview: known-workarounds/index.md

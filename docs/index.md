@@ -1,10 +1,10 @@
 # helmfile2compose
 
-The distribution that generates a working `docker compose` stack from your Kubernetes manifests. One source of truth, one script, one command.
+The distribution that generates a working `docker compose` stack from your Kubernetes manifests. Same charts, same values, one script, one command.
 
-> *He who renders the celestial into the mundane does not ascend — he merely ensures that both realms now share his suffering equally.*
+> *The faithful asked: why build a lesser altar? And the architect answered: because the congregation will not climb the mountain. So the mountain was carried down, stone by stone, and reassembled in the valley — where it became, technically, a hill.*
 >
-> — *Necronomicon, On the Folly of Downward Translation (I think)*
+> — *De Vermis Mysteriis, On Conditions d'Utilisation (trust me on this one)*
 
 ## What is this?
 
@@ -31,7 +31,8 @@ See [Getting started](getting-started.md) for the full setup guide.
 - **[Getting started](getting-started.md)** — installation, first run, adapting helmfile2compose for your own helmfile
 - **[Configuration](configuration.md)** — `dekube.yaml` deep dive: volumes, overrides, secrets, replacements
 - **[dekube-manager](https://manager.dekube.io/docs/)** — installing helmfile2compose and extensions via the package manager
-- **[Operations](operations.md)** — day-to-day: updating, data management, troubleshooting
+- **[Operations](operations.md)** — day-to-day: updating, data management
+- **[Troubleshooting](troubleshooting.md)** — when things break: installation, nerdctl, chart issues, alias collisions
 - **[Advanced](advanced.md)** — cohabiting with existing infrastructure, multiple projects, disabling Caddy
 - **[Known workarounds](known-workarounds/index.md)** — sushi recipes for the tentacles that don't fit
 - **[Glossary](glossary.md)** — terms, acronyms, and Lovecraftian vocabulary decoded
