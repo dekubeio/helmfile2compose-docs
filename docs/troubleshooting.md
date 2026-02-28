@@ -18,15 +18,15 @@ helmfile2compose needs `helm` and `helmfile` to render manifests. Yes, you need 
 **Helm:**
 
 ```bash
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4 | bash
 ```
 
-Auto-detects OS/arch, downloads, verifies checksum, installs to `/usr/local/bin`. Verify: `helm version` should print v3.x.
+Auto-detects OS/arch, downloads, verifies checksum, installs to `/usr/local/bin`. Verify: `helm version` should print v4.x.
 
 **Helmfile:**
 
 ```bash
-curl -sL https://github.com/helmfile/helmfile/releases/download/v1.3.0/helmfile_1.3.0_linux_amd64.tar.gz | tar -xzf - helmfile
+curl -sL https://github.com/helmfile/helmfile/releases/download/v1.3.2/helmfile_1.3.2_linux_amd64.tar.gz | tar -xzf - helmfile
 sudo mv helmfile /usr/local/bin/
 ```
 
