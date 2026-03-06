@@ -11,7 +11,7 @@ I've been there. The first time, I ignored the request. The second time, I built
 >
 > — *Necronomicon, On the Folly of Downward Translation (or so I recall)*
 
-For the dark and twisted ritual underlying the conversion — what gets converted, how, and what unholy transformations are applied — see [Architecture](https://docs.dekube.io/architecture/).
+For the dark and twisted ritual underlying the conversion — what gets converted, how, and what unholy transformations are applied — see [Architecture](https://docs.dekube.io/understand/architecture/).
 
 ## Requirements
 
