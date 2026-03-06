@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://helmfile2compose.dekube.io/docs/sitemap.xml

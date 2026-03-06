@@ -1,6 +1,6 @@
 # Using helmfile2compose with your own project
 
-You're here because someone asked for a docker-compose. A colleague, a client, a mass of uninitiated who do not care that Kubernetes exists for a reason. You have explained. They do not care. They want `docker compose up` and they want it yesterday.
+You're here because someone asked for a Docker Compose. A colleague, a client, a mass of uninitiated who do not care that Kubernetes exists for a reason. You have explained. They do not care. They want `docker compose up` and they want it yesterday.
 
 I've been there. The first time, I ignored the request. The second time, I built a tool. The third time, I went back to my own platform, said "why not" — and the tool stopped being a tool. At least you're warned about what it does, which is more than most ecosystems offer before pulling you in.
 
@@ -202,7 +202,7 @@ This is by design. Error handling for malformed K8s manifests is not helmfile2co
 
 ## Final warning
 
-This tool works. It has been tested on real helmfiles with real users. But it is, fundamentally, an act of desecration — stripping Kubernetes of everything that makes it Kubernetes (scheduling, scaling, self-healing, network policies, RBAC) and leaving behind a flat list of containers. Every edge case you hit is a reminder that you are running something that was designed for orchestration on a machine that has no orchestra — and that the person who asked you for a docker-compose owes you a drink — or the psychiatric bill, whichever comes first.
+This tool works. It has been tested on real helmfiles with real users. But it is, fundamentally, an act of desecration — stripping Kubernetes of everything that makes it Kubernetes (scheduling, scaling, self-healing, network policies, RBAC) and leaving behind a flat list of containers. Every edge case you hit is a reminder that you are running something that was designed for orchestration on a machine that has no orchestra — and that the person who asked you for a Docker Compose owes you a drink — or the psychiatric bill, whichever comes first.
 
 > *The temple was not translated — it was dismantled, stone by stone, and rebuilt as a shed. The prayers still worked. The architect watched, powerless, as the faithful praised the shed.*
 >

@@ -1,6 +1,6 @@
-site_name: helmfile2compose
+site_name: helmfile2compose — Convert Helmfile to Docker Compose
 site_url: https://helmfile2compose.dekube.io/docs/
-site_description: "The helmfile2compose distribution — generate compose.yml from your Kubernetes manifests. Same charts, same values, no second stack to maintain."
+site_description: "Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. The default dekube distribution — one Python script, 8 bundled extensions, one command."
 repo_url: https://github.com/dekubeio/helmfile2compose
 repo_name: dekubeio/helmfile2compose
 
@@ -56,5 +56,10 @@ markdown_extensions:
   - pymdownx.details
   - toc:
       permalink: true
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/dekubeio
 
 copyright: Public domain. No rights reserved. No tentacle returns. (Built with <a href="https://squidfunk.github.io/mkdocs-material/">MkDocs Material</a>)
