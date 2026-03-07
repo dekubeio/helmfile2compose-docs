@@ -32,6 +32,7 @@ theme:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - How the conversion works: how-conversion-works.md
   - Configuration: configuration.md
   - dekube-manager: https://manager.dekube.io/docs/
   - Operations: operations.md
