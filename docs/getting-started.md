@@ -1,5 +1,7 @@
 # Using helmfile2compose with your own project
 
+If you need to use this tool, I am truly sorry.
+
 You're here because someone asked for a Docker Compose. A colleague, a client, a mass of uninitiated who do not care that Kubernetes exists for a reason. You have explained. They do not care. They want `docker compose up` and they want it yesterday.
 
 I've been there. The first time, I ignored the request. The second time, I built a tool. The third time, I went back to my own platform, said "why not" — and the tool stopped being a tool. At least you're warned about what it does, which is more than most ecosystems offer before pulling you in.
@@ -16,7 +18,7 @@ For the dark and twisted ritual underlying the conversion — what gets converte
 ## Requirements
 
 - Python 3.10+
-- `pyyaml`
+- `pyyaml` (`pip install pyyaml`)
 - `helmfile` + `helm` (only if rendering from helmfile directly)
 - **Docker Compose** (v2) — recommended for running the generated output. nerdctl compose requires the `flatten-internal-urls` transform to work (see [Network aliases](https://docs.dekube.io/limitations/#network-aliases-nerdctl)). Podman Compose works (v1.0.6+).
 
@@ -24,7 +26,7 @@ For the dark and twisted ritual underlying the conversion — what gets converte
 
 Your helmfile already uses an ingress controller. That choice is baked into your Ingress manifests — annotations, `ingressClassName` — and you're not going to change it for a compose migration. helmfile2compose needs a **rewriter** that speaks your controller's annotation dialect and translates it into reverse proxy configuration. If your controller isn't supported, your Ingress manifests will be silently skipped and you'll have no reverse proxy — which is the single most visible thing that breaks.
 
-The default reverse proxy is **Caddy**, bundled with the distribution. The entire ingress system is pluggable — rewriters can be installed or [written](https://docs.dekube.io/extensions/writing-rewriters/), and Caddy itself can be [replaced](https://docs.dekube.io/extensions/writing-ingressproviders/).
+Two things happen with Ingress manifests, and they're handled by two different pieces. **Rewriters** read your controller-specific annotations (HAProxy, Nginx, Traefik) and translate them into a generic format. The **IngressProvider** is the actual compose service that handles requests — by default **Caddy**, bundled with the distribution. Your K8s cluster had HAProxy or Nginx; in compose, Caddy takes over as the reverse proxy, using what the rewriter extracted. Both are pluggable — rewriters can be [installed or written](https://docs.dekube.io/extensions/writing-rewriters/), and Caddy itself can be [replaced](https://docs.dekube.io/extensions/writing-ingressproviders/). For the full picture, see [concepts](https://docs.dekube.io/understand/concepts/).
 
 | Controller | Rewriter | Status |
 |------------|----------|--------|
@@ -34,7 +36,15 @@ The default reverse proxy is **Caddy**, bundled with the distribution. The entir
 
 If you use something else (Contour, Ambassador, Istio, AWS ALB, etc.) — standard Ingress `host`/`path`/`backend` fields are always read, so basic routing works, but controller-specific annotations won't translate. Check this *before* investing time in the rest of the setup.
 
-CRDs (Keycloak, cert-manager, trust-manager, Prometheus) are a different story — they're optional, and unsupported CRDs are simply skipped with a warning. Your stack works without them; you just lose the resources they would have produced. Ingress is not optional.
+CRDs won't crash the tool if unsupported — they're skipped with a warning. But "skipped" means the resources they would have produced are missing, and how much that hurts varies:
+
+- Some CRDs are **backbone** — skip them and your stack is broken, not simplified. Install the matching extension.
+- Some are **nice to have** — internal TLS, for instance, can often be disabled in your helmfile environment instead. Your stack works without it.
+- Some are **ignorable** — monitoring in compose is [its own discussion](https://docs.dekube.io/catalogue/#servicemonitor).
+
+There's also a fourth category: **live CRDs** that are fundamentally incompatible. Operators that watch the apiserver, apps that do leader election via Lease objects, runtime API consumers — these have no compose equivalent and no extension will fix them. They're [documented in concepts](https://docs.dekube.io/understand/concepts/#whats-behind-the-wall). If you're going to maintain dekube for your stack long-term, understanding the tier system is worth the detour — though not mandatory and not recommended for your mental health.
+
+Ingress is not optional either.
 
 !!! note "kubernetes2simple"
     [kubernetes2simple](https://k2s.dekube.io/) exists as an all-inclusive distribution — helmfile2compose + every extension, one script, zero config. It's convenient for a quick test, but probably not what you want long-term: it enables transforms like `bitnami` that silently replace images, which may not be desired for your stack. As a maintainer, you'll want to pick your extensions deliberately.
@@ -50,6 +60,8 @@ services:
 `compose.override.yml` is automatically merged by Docker Compose, never overwritten by helmfile2compose, and yours to maintain.
 
 ## Installation
+
+The [quick start](index.md#quick-start) uses dekube-manager to download everything automatically. Here's the manual approach, for when you want full control over what you install.
 
 Download `helmfile2compose.py` from the [latest helmfile2compose release](https://github.com/dekubeio/helmfile2compose/releases/latest).
 
@@ -146,7 +158,7 @@ If your stack includes Bitnami charts (Redis, PostgreSQL, Keycloak), install the
 - **S3 virtual-hosted style** — compose DNS can't resolve `bucket.minio:9000`. Force path-style in your app config and use a `replacement` if needed.
 - **CronJobs** — not converted. Run them externally or use a sleep-loop wrapper (but please don't).
 
-See [Limitations](https://docs.dekube.io/limitations/) for the complete list of what gets lost in translation.
+See [Limitations](limitations.md) for the distribution-level summary, or [docs.dekube.io/limitations](https://docs.dekube.io/limitations/) for the exhaustive technical list.
 
 ## Ingress controllers — details {#ingress-controllers}
 

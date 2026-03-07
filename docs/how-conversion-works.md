@@ -98,7 +98,7 @@ If a ConfigMap has `DATABASE_HOST=postgres.default.svc.cluster.local`, it still 
 
 ## Ingress
 
-Ingress resources become static reverse proxy rules. kubernetes2simple uses Caddy; helmfile2compose supports Caddy and HAProxy via [rewriter extensions](https://docs.dekube.io/extend/extensions/writing-rewriters/).
+Ingress resources become static reverse proxy rules. Both distributions use **Caddy** as the reverse proxy (the *ingress provider*). Controller-specific annotations (HAProxy, Nginx, Traefik) are read by *rewriter* extensions that translate them into Caddy-compatible rules — see [rewriter extensions](https://docs.dekube.io/extend/extensions/writing-rewriters/).
 
 `host: myapp.example.com` routing to port 8080 → a Caddy rule proxying that hostname to the Compose service. TLS via Caddy's internal CA. Controller-specific annotations (rate limiting, redirects, custom headers) are translated when they have a Compose equivalent, skipped otherwise.
 
@@ -124,7 +124,7 @@ Each init container becomes a separate Compose service with `restart: on-failure
 
 ## Sidecars
 
-Sidecar containers share a network namespace in Kubernetes — they talk over `localhost`. In Compose, they use `network_mode: container:<main>` to achieve the same thing. This mostly works, except when it doesn't — see [limitations — sidecars](limitations.md#sidecars-and-pod-level-networking).
+Sidecar containers share a network namespace in Kubernetes — they talk over `localhost`. In Compose, they use `network_mode: container:<main>` to achieve the same thing. This mostly works, except when it doesn't — see [limitations — sidecars](https://docs.dekube.io/limitations/#sidecars-and-pod-level-networking).
 
 ## CRDs
 
@@ -138,7 +138,7 @@ Unknown CRDs are skipped with a warning. Need one handled? That's what [third-pa
 
 ## What gets skipped
 
-HPA, RBAC, NetworkPolicy, PDB, CronJob — anything that only makes sense with a control plane. These are logged and don't affect the output. The [full list](limitations.md#what-is-ignored) explains the rationale for each.
+HPA, RBAC, NetworkPolicy, PDB, CronJob — anything that only makes sense with a control plane. These are logged and don't affect the output. The [full list](https://docs.dekube.io/limitations/#what-is-ignored) explains the rationale for each.
 
 ---
 

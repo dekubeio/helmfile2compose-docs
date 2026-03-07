@@ -26,7 +26,7 @@ This skips the Caddy service in `compose.yml` and writes the Ingress rules to `C
 
    - **If you use something else** (nginx, Traefik, HAProxy, ...) — the `Caddyfile-<project>` is still generated as a reference for which hosts and paths map to which upstream services. Translate it to your proxy's config format manually. If you'd rather have helmfile2compose generate your proxy's config natively, you can install an [ingress provider extension](https://docs.dekube.io/catalogue/#ingress-providers) if one exists for your proxy, or [write your own](https://docs.dekube.io/extensions/writing-ingressproviders/).
 
-   - **If you don't need a reverse proxy at all** — `disable_ingress: true` skips both the proxy service and the config file. Services are still reachable directly by their exposed ports. This is the simplest option for local dev when you don't care about host-based routing.
+   - **If you don't need a reverse proxy at all** — `disable_ingress: true` skips the proxy service; the `Caddyfile-<project>` fragment is still generated (as a reference) but you can ignore it. Services are still reachable directly by their exposed ports. This is the simplest option for local dev when you don't care about host-based routing.
 
 3. Your existing compose projects and the helmfile2compose-generated one must share a Docker network so the reverse proxy can reach every service. In `dekube.yaml`, add:
 

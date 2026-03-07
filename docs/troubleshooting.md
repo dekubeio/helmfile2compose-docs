@@ -28,6 +28,7 @@ Auto-detects OS/arch, downloads, verifies checksum, installs to `/usr/local/bin`
 ```bash
 curl -sL https://github.com/helmfile/helmfile/releases/download/v1.3.2/helmfile_1.3.2_linux_amd64.tar.gz | tar -xzf - helmfile
 sudo mv helmfile /usr/local/bin/
+# ↑ Version may be stale — check https://github.com/helmfile/helmfile/releases/latest
 ```
 
 Verify: `helmfile --version` should print v1.x. Other platforms: check the [release assets](https://github.com/helmfile/helmfile/releases/latest) for your OS/arch.
