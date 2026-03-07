@@ -98,9 +98,9 @@ If a ConfigMap has `DATABASE_HOST=postgres.default.svc.cluster.local`, it still 
 
 ## Ingress
 
-Ingress resources become static reverse proxy rules. Both distributions use **Caddy** as the reverse proxy (the *ingress provider*). Controller-specific annotations (HAProxy, Nginx, Traefik) are read by *rewriter* extensions that translate them into Caddy-compatible rules — see [rewriter extensions](https://docs.dekube.io/extend/extensions/writing-rewriters/).
+Ingress resources become static reverse proxy rules. Both distributions use **Caddy** as the default reverse proxy (the *ingress provider*), though an [Nginx provider](https://github.com/dekubeio/dekube-provider-nginx) is also available. Controller-specific annotations (HAProxy, Nginx, Traefik) are read by *rewriter* extensions that translate them into provider-agnostic ingress entries — see [rewriter extensions](https://docs.dekube.io/extend/extensions/writing-rewriters/).
 
-`host: myapp.example.com` routing to port 8080 → a Caddy rule proxying that hostname to the Compose service. TLS via Caddy's internal CA. Controller-specific annotations (rate limiting, redirects, custom headers) are translated when they have a Compose equivalent, skipped otherwise.
+`host: myapp.example.com` routing to port 8080 → a reverse proxy rule proxying that hostname to the Compose service. TLS via the provider's CA (Caddy internal CA, certbot, self-signed, or user-provided certs). Controller-specific annotations (rate limiting, redirects, custom headers) are translated when they have a Compose equivalent, skipped otherwise.
 
 Your hostnames need to resolve locally — `*.localhost` works out of the box on most systems, anything else needs `/etc/hosts`.
 
@@ -144,4 +144,4 @@ HPA, RBAC, NetworkPolicy, PDB, CronJob — anything that only makes sense with a
 
 > *"Not all scripture survives the translation. The rites of horizontal scaling, the prayers of admission control, the litanies of role-based access — these were left behind, for the lesser temple has no use for gods it cannot host."*
 >
-> — *De Vermis Mysteriis, On the Acceptable Losses of Conversion (so I'm told)*
+> — *De Vermis Mysteriis, On the Acceptable Losses of Conversion (accounts vary)*

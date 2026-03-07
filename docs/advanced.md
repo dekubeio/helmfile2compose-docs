@@ -20,11 +20,13 @@ This skips the Caddy service in `compose.yml` and writes the Ingress rules to `C
 
 2. Configure your reverse proxy.
 
-   The default reverse proxy is **Caddy**, bundled with the distribution. But the system is pluggable — three options depending on your situation:
+   The default reverse proxy is **Caddy**, bundled with the distribution. But the system is pluggable — four options depending on your situation:
 
    - **If you already use Caddy** — you're in luck. Merge the contents of `Caddyfile-<project>` into your existing Caddyfile. When the project regenerates, diff the new fragment against your merged version and update accordingly. This will break on upgrades. At some point, actions have consequences.
 
-   - **If you use something else** (nginx, Traefik, HAProxy, ...) — the `Caddyfile-<project>` is still generated as a reference for which hosts and paths map to which upstream services. Translate it to your proxy's config format manually. If you'd rather have helmfile2compose generate your proxy's config natively, you can install an [ingress provider extension](https://docs.dekube.io/catalogue/#ingress-providers) if one exists for your proxy, or [write your own](https://docs.dekube.io/extensions/writing-ingressproviders/).
+   - **If you use Nginx** — install [dekube-provider-nginx](https://github.com/dekubeio/dekube-provider-nginx), which generates `nginx.conf` and an `nginx` compose service instead of Caddy. Supports plain HTTP, ACME/certbot, self-signed TLS, and user-provided certificates. See its README for configuration.
+
+   - **If you use something else** (Traefik, HAProxy, ...) — the `Caddyfile-<project>` is still generated as a reference for which hosts and paths map to which upstream services. Translate it to your proxy's config format manually. If you'd rather have helmfile2compose generate your proxy's config natively, you can [write your own ingress provider](https://docs.dekube.io/extend/extensions/writing-ingressproviders/).
 
    - **If you don't need a reverse proxy at all** — `disable_ingress: true` skips the proxy service; the `Caddyfile-<project>` fragment is still generated (as a reference) but you can ignore it. Services are still reachable directly by their exposed ports. This is the simplest option for local dev when you don't care about host-based routing.
 
@@ -54,7 +56,7 @@ Sidecars use `container_name` and `network_mode: container:<name>` to share thei
 > "To summon the inexplicable and the unspeakable into the same circle
 > is to ensure that neither shall depart peaceably."
 >
-> — *Necronomicon, On Unnatural Affinities (allegedly)*
+> — *Necronomicon, On Unnatural Affinities (no witnesses)*
 
 To rename a project: edit `name:` in `dekube.yaml`, delete `compose.yml`, regenerate.
 

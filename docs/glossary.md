@@ -38,10 +38,10 @@ Quick reference for terms used across this documentation. If a word sounds like 
 :   A converter subtype that populates `ConvertContext` lookups (e.g. `ctx.configmaps`, `ctx.secrets`, `ctx.services`) without producing any output. Indexers run first (default priority 50) so that later converters and providers can resolve references. The four bundled indexers handle ConfigMap, Secret, PVC, and Service.
 
 **ingress entry**
-:   A dict produced by an *ingress rewriter* describing one routing rule: hostname, path, upstream, TLS settings, extra directives. The *ingress provider* consumes these entries to build the reverse proxy config (e.g. a Caddyfile).
+:   A dict produced by an *ingress rewriter* describing one routing rule: hostname, path, upstream, TLS settings, response headers, max body size. The *ingress provider* consumes these entries to build the reverse proxy config (e.g. a Caddyfile or `nginx.conf`).
 
 **ingress provider** (IngressProvider)
-:   The extension that produces the reverse proxy service and its config file from *ingress entries*. The default is CaddyProvider (generates a Caddy service + Caddyfile). Replacing it swaps the entire reverse proxy backend. Not to be confused with *ingress rewriter*.
+:   The extension that produces the reverse proxy service and its config file from *ingress entries*. The default is CaddyProvider (generates a Caddy service + Caddyfile). An [NginxProvider](https://github.com/dekubeio/dekube-provider-nginx) is also available (generates an Nginx service + `nginx.conf`). Replacing the provider swaps the entire reverse proxy backend. Not to be confused with *ingress rewriter*.
 
 **ingress rewriter** (IngressRewriter)
 :   An extension that translates controller-specific Ingress annotations (HAProxy, nginx, traefik) into *ingress entries*. Each rewriter targets one ingress controller via `ingressClassName`. Not to be confused with *ingress provider* — the rewriter reads annotations, the provider builds the proxy.

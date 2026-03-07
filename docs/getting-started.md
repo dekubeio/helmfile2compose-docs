@@ -26,7 +26,7 @@ For the dark and twisted ritual underlying the conversion — what gets converte
 
 Your helmfile already uses an ingress controller. That choice is baked into your Ingress manifests — annotations, `ingressClassName` — and you're not going to change it for a compose migration. helmfile2compose needs a **rewriter** that speaks your controller's annotation dialect and translates it into reverse proxy configuration. If your controller isn't supported, your Ingress manifests will be silently skipped and you'll have no reverse proxy — which is the single most visible thing that breaks.
 
-Two things happen with Ingress manifests, and they're handled by two different pieces. **Rewriters** read your controller-specific annotations (HAProxy, Nginx, Traefik) and translate them into a generic format. The **IngressProvider** is the actual compose service that handles requests — by default **Caddy**, bundled with the distribution. Your K8s cluster had HAProxy or Nginx; in compose, Caddy takes over as the reverse proxy, using what the rewriter extracted. Both are pluggable — rewriters can be [installed or written](https://docs.dekube.io/extensions/writing-rewriters/), and Caddy itself can be [replaced](https://docs.dekube.io/extensions/writing-ingressproviders/). For the full picture, see [concepts](https://docs.dekube.io/understand/concepts/).
+Two things happen with Ingress manifests, and they're handled by two different pieces. **Rewriters** read your controller-specific annotations (HAProxy, Nginx, Traefik) and translate them into a generic format. The **IngressProvider** is the actual compose service that handles requests — by default **Caddy**, bundled with the distribution. An [Nginx provider](https://github.com/dekubeio/dekube-provider-nginx) is also available as an extension if you prefer Nginx as your reverse proxy. Your K8s cluster had HAProxy or Nginx; in compose, the ingress provider takes over, using what the rewriter extracted. Both are pluggable — rewriters can be [installed or written](https://docs.dekube.io/extend/extensions/writing-rewriters/), and the ingress provider can be [replaced](https://docs.dekube.io/extend/extensions/writing-ingressproviders/). For the full picture, see [concepts](https://docs.dekube.io/understand/concepts/).
 
 | Controller | Rewriter | Status |
 |------------|----------|--------|
@@ -49,15 +49,15 @@ Ingress is not optional either.
 !!! note "kubernetes2simple"
     [kubernetes2simple](https://k2s.dekube.io/) exists as an all-inclusive distribution — helmfile2compose + every extension, one script, zero config. It's convenient for a quick test, but probably not what you want long-term: it enables transforms like `bitnami` that silently replace images, which may not be desired for your stack. As a maintainer, you'll want to pick your extensions deliberately.
 
-**fix-permissions** is bundled with the distribution and active by default. It generates a busybox init service that fixes bind mount ownership for non-root containers — in most cases a net gain. If you don't want it: bundled extensions can't be individually disabled yet (it's on the [roadmap](https://docs.dekube.io/roadmap/#per-extension-enabled-false)). In the meantime, use a `compose.override.yml` to neutralize it:
+**fix-permissions** is bundled with the distribution and active by default. It generates a busybox init service that fixes bind mount ownership for non-root containers — in most cases a net gain. If you don't want it, disable it in `dekube.yaml`:
 
 ```yaml
-services:
+extensions:
   fix-permissions:
-    entrypoint: ["true"]
+    enabled: false
 ```
 
-`compose.override.yml` is automatically merged by Docker Compose, never overwritten by helmfile2compose, and yours to maintain.
+See [per-extension config](https://docs.dekube.io/reference/config/#per-extension-config-extensions) for the full mechanism.
 
 ## Installation
 
@@ -218,4 +218,4 @@ This tool works. It has been tested on real helmfiles with real users. But it is
 
 > *The temple was not translated — it was dismantled, stone by stone, and rebuilt as a shed. The prayers still worked. The architect watched, powerless, as the faithful praised the shed.*
 >
-> — *De Vermis Mysteriis, On Unnecessary Simplifications (debatable)*
+> — *De Vermis Mysteriis, On Unnecessary Simplifications (the evidence is circumstantial)*

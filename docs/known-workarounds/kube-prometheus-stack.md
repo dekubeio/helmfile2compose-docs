@@ -6,7 +6,7 @@ The problem: Grafana in kube-prometheus-stack ships with **k8s-sidecar** contain
 
 > *The acolyte built a mirror-temple, faithful in every stone — yet the oracles within fell silent, for the gods they consulted resided in a firmament this world had never known. The prayers were correct; the heavens were absent.*
 >
-> — *Cultes des Goules, On Oracles Without Firmament (so they say)*
+> — *Cultes des Goules, On Oracles Without Firmament (take my word for it)*
 
 ## What to exclude
 
