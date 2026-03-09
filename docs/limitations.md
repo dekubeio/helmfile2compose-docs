@@ -24,6 +24,10 @@ Operator-managed resources are skipped unless a loaded extension handles them. S
 
 Not converted. No compose equivalent.
 
+### Long service names
+
+Linux hostnames are limited to 63 characters. Compose uses the service name as the container hostname, and Helm-generated names can easily exceed that limit. dekube automatically sets a truncated `hostname:` on affected services to avoid `sethostname: invalid argument` failures. The compose service name itself is unchanged — only the container hostname is shortened.
+
 ### emptyDir volumes
 
 Not shared between init containers and the main container in compose. Map to a named volume manually if needed.

@@ -65,15 +65,15 @@ The [quick start](index.md#quick-start) uses dekube-manager to download everythi
 
 Download `helmfile2compose.py` from the [latest helmfile2compose release](https://github.com/dekubeio/helmfile2compose/releases/latest).
 
-If your stack uses CRDs that have an [dekube extension](https://docs.dekube.io/catalogue/) (Keycloak, cert-manager, trust-manager), grab the extension `.py` files from their repos too and drop them in an `extensions/` directory next to the script:
+If your stack uses CRDs that have an [dekube extension](https://docs.dekube.io/catalogue/) (Keycloak, cert-manager, trust-manager), grab the extension `.py` files from their repos too and drop them in `.dekube/extensions/`:
 
 ```
-extensions/
+.dekube/extensions/
 ├── keycloak.py            # from dekube-provider-keycloak
 └── cert_manager.py        # from dekube-converter-cert-manager
 ```
 
-That's it. No package manager needed at this stage — [dekube-manager](https://manager.dekube.io/docs/) is for later, when you ship a `generate-compose.sh` to your users (see [Recommended workflow](#recommended-workflow)).
+This is the same directory that [dekube-manager](https://manager.dekube.io/docs/) uses when installing extensions automatically — so switching to the manager later is seamless.
 
 ## Preparing your helmfile
 
@@ -97,7 +97,7 @@ If your stack uses CRDs that have an [dekube extension](https://docs.dekube.io/c
 
 ```bash
 python3 helmfile2compose.py --helmfile-dir ~/my-project -e compose \
-  --extensions-dir extensions --output-dir .
+  --extensions-dir .dekube/extensions --output-dir .
 docker compose up -d
 ```
 
