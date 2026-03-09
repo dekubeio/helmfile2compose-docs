@@ -6,6 +6,18 @@ You're here because someone asked for a Docker Compose. A colleague, a client, a
 
 I've been there. The first time, I ignored the request. The second time, I built a tool. The third time, I went back to my own platform, said "why not" — and the tool stopped being a tool. At least you're warned about what it does, which is more than most ecosystems offer before pulling you in.
 
+!!! tip "The tone is dark. The support isn't."
+    This documentation actively tries to talk you out of using this. That's honesty, not hostility. If you're here and you need it to work, I'm not going to be in your way. Open an issue — I'll help.
+
+    | Problem | Where to open an issue |
+    |---------|------------------------|
+    | Conversion output is wrong, stack doesn't boot | [helmfile2compose](https://github.com/dekubeio/helmfile2compose/issues) |
+    | A specific extension misbehaves | The extension's own repo (see [catalogue](https://docs.dekube.io/catalogue/)) |
+    | Engine contract bug, pipeline issue | [dekube-engine](https://github.com/dekubeio/dekube-engine/issues) |
+    | dekube-manager can't install something | [dekube-manager](https://github.com/dekubeio/dekube-manager/issues) |
+    | Docs are wrong or missing | [dekube-docs](https://github.com/dekubeio/dekube-docs/issues) or [helmfile2compose-docs](https://github.com/dekubeio/helmfile2compose-docs/issues) |
+    | Not sure where to file | [helmfile2compose](https://github.com/dekubeio/helmfile2compose/issues) — I'll triage |
+
 !!! note "helmfile2compose vs dekube-engine"
     **dekube-engine** is the bare conversion engine — an empty pipeline with no built-in converters. **helmfile2compose** is the distribution: dekube-engine bundled with 8 extensions (workloads, indexers, HAProxy, Caddy) into a single `helmfile2compose.py`. This is what you download, run, and ship. When this page says "helmfile2compose", it means the distribution — the thing you actually use.
 

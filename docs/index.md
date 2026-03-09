@@ -39,6 +39,9 @@ See [Getting started](getting-started.md) for the full setup guide.
 - **[Glossary](glossary.md)** — terms, acronyms, and Lovecraftian vocabulary decoded
 - **[Limitations](limitations.md)** — what gets lost in translation
 
+!!! tip "Need help?"
+    The documentation's tone is gallows humor — the support is real. If something doesn't work, open an issue on [helmfile2compose](https://github.com/dekubeio/helmfile2compose/issues). For extension-specific problems, use the extension's own repo (see [catalogue](https://docs.dekube.io/catalogue/)). Not sure where to file? Use helmfile2compose — I'll triage.
+
 ## Compatible projects
 
 - **[stoatchat-platform](https://github.com/baptisterajaut/stoatchat-platform)** — 15 services. Chat platform (Revolt rebranded).

@@ -99,4 +99,12 @@ Without this mapping, helmfile2compose won't recognize the class and the Ingress
 
 ---
 
-Still stuck? Open an issue on the [helmfile2compose repo](https://github.com/dekubeio/helmfile2compose/issues). Include the error, your `dekube.yaml`, and which extensions you're using.
+Still stuck? Open an issue — include the error, your `dekube.yaml`, and which extensions you're using.
+
+| Problem | Where to open an issue |
+|---------|------------------------|
+| Conversion output is wrong, stack doesn't boot | [helmfile2compose](https://github.com/dekubeio/helmfile2compose/issues) |
+| A specific extension misbehaves | The extension's own repo (see [catalogue](https://docs.dekube.io/catalogue/)) |
+| Engine contract bug, pipeline issue | [dekube-engine](https://github.com/dekubeio/dekube-engine/issues) |
+| dekube-manager can't install something | [dekube-manager](https://github.com/dekubeio/dekube-manager/issues) |
+| Not sure where to file | [helmfile2compose](https://github.com/dekubeio/helmfile2compose/issues) — I'll triage |
