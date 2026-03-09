@@ -69,6 +69,34 @@ docker inspect <container> --format '{{ .NetworkSettings.Networks }}'
 
 If two containers from different projects share the same alias on the same network, you found it. See [Advanced — multi-project](advanced.md) for the setup that avoids this.
 
+## Ingress rules are missing from Caddyfile
+
+The Caddyfile is empty, or some Ingress manifests are silently skipped. This means no `IngressRewriter` matched those manifests.
+
+**Diagnose:**
+
+1. Check stderr output — look for `"unknown ingressClassName"` or `"no rewriter matched"` warnings.
+2. Verify which ingress controller your Ingress manifests use: `ingressClassName` in the spec, or `kubernetes.io/ingress.class` annotation.
+3. Check that the matching rewriter is installed:
+
+| Controller | Rewriter | How to install |
+|------------|----------|----------------|
+| HAProxy | bundled | already included |
+| Nginx | [dekube-rewriter-nginx](https://github.com/dekubeio/dekube-rewriter-nginx) | `python3 dekube-manager.py nginx` |
+| Traefik | [dekube-rewriter-traefik](https://github.com/dekubeio/dekube-rewriter-traefik) | `python3 dekube-manager.py traefik` |
+
+4. If your cluster uses **custom class names** (e.g. `haproxy-internal`, `nginx-dmz`), add a mapping in `dekube.yaml`:
+
+```yaml
+ingress_types:
+  haproxy-internal: haproxy
+  nginx-dmz: nginx
+```
+
+Without this mapping, helmfile2compose won't recognize the class and the Ingress is skipped.
+
+5. If your controller isn't listed above (Contour, Ambassador, Istio, AWS ALB...), basic `host`/`path`/`backend` routing still works, but controller-specific annotations won't translate. Consider [writing a rewriter](https://docs.dekube.io/extend/extensions/writing-rewriters/).
+
 ---
 
 Still stuck? Open an issue on the [helmfile2compose repo](https://github.com/dekubeio/helmfile2compose/issues). Include the error, your `dekube.yaml`, and which extensions you're using.

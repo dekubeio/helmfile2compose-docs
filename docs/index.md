@@ -30,7 +30,7 @@ See [Getting started](getting-started.md) for the full setup guide.
 
 - **[Getting started](getting-started.md)** — installation, first run, adapting helmfile2compose for your own helmfile
 - **[How the conversion works](how-conversion-works.md)** — what happens to your Deployments, ConfigMaps, Ingresses, and everything else
-- **[Configuration](configuration.md)** — `dekube.yaml` deep dive: volumes, overrides, secrets, replacements
+- **[Configuration](configuration.md)** — `dekube.yaml` overview, distribution-specific keys, and links to the full engine reference
 - **[dekube-manager](https://manager.dekube.io/docs/)** — installing helmfile2compose and extensions via the package manager
 - **[Operations](operations.md)** — day-to-day: updating, data management
 - **[Troubleshooting](troubleshooting.md)** — when things break: installation, nerdctl, chart issues, alias collisions

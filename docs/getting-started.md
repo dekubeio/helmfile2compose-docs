@@ -101,12 +101,16 @@ python3 helmfile2compose.py --helmfile-dir ~/my-project -e compose \
 docker compose up -d
 ```
 
-This renders the helmfile and converts in one step. Despite the name, **helmfile is not required** — `--from-dir` accepts any directory of pre-rendered K8s YAML (from `helm template`, `kustomize build`, etc.).
+This renders the helmfile and converts in one step.
+
+**No helmfile?** Use `--from-dir` instead of `--helmfile-dir` to skip the helmfile render step entirely. Point it at any directory of pre-rendered K8s YAML (from `helm template`, `kustomize build`, or plain manifests). The conversion is identical — `--helmfile-dir` just runs `helmfile template` for you first.
 
 On first run, the tool creates `dekube.yaml` with sensible defaults:
 - All PVCs registered as host-path bind mounts under `./data/`
 - K8s-only workloads auto-excluded (any workload whose name contains `cert-manager`, `ingress`, or `reflector` — this targets controller Deployments, not Ingress resources)
 - Project name derived from the source directory
+
+**Verify the output**: `compose.yml` and `Caddyfile` should exist in your output directory. Run `docker compose config` to validate the generated compose file. If the Caddyfile is empty or missing host blocks, your ingress controller is probably not supported — see [Before you start](#before-you-start-ingress-controller) above.
 
 **Stop here and review `dekube.yaml`.** You will almost certainly need to:
 - Adjust volume paths
@@ -176,7 +180,7 @@ HAProxy is built into the helmfile2compose distribution. Nginx and Traefik are e
 
 ### Custom ingress class names
 
-If your cluster uses custom `ingressClassName` values (e.g. `haproxy-internal`, `nginx-dmz`), add a mapping in `dekube.yaml` (see [Configuration — ingress_types](configuration.md#ingress_types)):
+If your cluster uses custom `ingressClassName` values (e.g. `haproxy-internal`, `nginx-dmz`), add a mapping in `dekube.yaml` (see [ingress_types](https://docs.dekube.io/reference/config/#full-schema)):
 
 ```yaml
 ingress_types:
