@@ -61,7 +61,7 @@ See [per-extension config](https://docs.dekube.io/reference/config/#per-extensio
 
 ## Installation
 
-The [quick start](index.md#quick-start) uses dekube-manager to download everything automatically. Here's the manual approach, for when you want full control over what you install.
+The [quick start](index.md#quick-start) uses dekube-manager to download everything automatically. Here's the manual approach, for when you want full control over what you install — or full accountability for what went wrong.
 
 Download `helmfile2compose.py` from the [latest helmfile2compose release](https://github.com/dekubeio/helmfile2compose/releases/latest).
 
@@ -76,6 +76,8 @@ If your stack uses CRDs that have an [dekube extension](https://docs.dekube.io/c
 This is the same directory that [dekube-manager](https://manager.dekube.io/docs/) uses when installing extensions automatically — so switching to the manager later is seamless.
 
 ## Preparing your helmfile
+
+You need Helm to escape Helm. The irony writes itself.
 
 Create a dedicated environment (e.g. `compose`) that disables K8s-only infrastructure. These components have no meaning in compose and will be auto-excluded on first run anyway, but disabling them avoids rendering useless manifests:
 
@@ -95,6 +97,8 @@ If your stack uses CRDs that have an [dekube extension](https://docs.dekube.io/c
 
 ## First run
 
+This is the point of no return. Everything before this was theoretical. After this, you have a compose stack, and you will spend the rest of the evening staring at it.
+
 ```bash
 python3 helmfile2compose.py --helmfile-dir ~/my-project -e compose \
   --extensions-dir .dekube/extensions --output-dir .
@@ -110,12 +114,12 @@ On first run, the tool creates `dekube.yaml` with sensible defaults:
 - K8s-only workloads auto-excluded (any workload whose name contains `cert-manager`, `ingress`, or `reflector` — this targets controller Deployments, not Ingress resources)
 - Project name derived from the source directory
 
-**Verify the output**: `compose.yml` and `Caddyfile` should exist in your output directory. Run `docker compose config` to validate the generated compose file. If the Caddyfile is empty or missing host blocks, your ingress controller is probably not supported — see [Before you start](#before-you-start-ingress-controller) above.
+**Verify the output**: `compose.yml` and `Caddyfile` should exist in your output directory. Run `docker compose config` to validate the generated compose file. If the Caddyfile is empty or missing host blocks, your ingress controller is probably not supported.
 
-**Stop here and review `dekube.yaml`.** You will almost certainly need to:
+**Stop here and review `dekube.yaml`.** Do not skip this. The tool guessed, and its guesses are educated but soulless. You will almost certainly need to:
 - Adjust volume paths
 - Exclude workloads that make no sense outside K8s (operators, CRD controllers, etc.)
-- Add overrides for images that need replacing (e.g. bitnami -> vanilla)
+- Add overrides for images that need replacing (e.g. bitnami → vanilla, unless you enjoy debugging Bitnami's entrypoint scripts at 3 AM)
 
 See [Configuration](configuration.md) for the full reference.
 
@@ -148,6 +152,8 @@ If your stack includes Bitnami charts (Redis, PostgreSQL, Keycloak), install the
 
 ## What works well
 
+This section exists to give you false confidence. It worked for two of my platforms — I built this thing for them — and it seems to work for mijn-bureau. Smile and wave — but brace for impact.
+
 - **Deployments, StatefulSets, DaemonSets, Jobs** — converted to compose services with the right image, env, command, volumes, and ports. Init containers and sidecars get their own services.
 - **ConfigMaps and Secrets** — resolved inline into environment variables, or generated as files when volume-mounted.
 - **Services** — network aliases (K8s FQDNs resolve natively via compose DNS), alias resolution, port remapping. If your K8s Service remaps port 80 to targetPort 8080, the tool rewrites URLs and env vars automatically.
@@ -156,6 +162,8 @@ If your stack includes Bitnami charts (Redis, PostgreSQL, Keycloak), install the
 - **CRDs** — with [extensions](https://docs.dekube.io/catalogue/), Keycloak, cert-manager, and trust-manager CRDs are fully converted.
 
 ## What needs manual help
+
+And here's where the false confidence evaporates.
 
 - **Unsupported CRDs** — Zalando PostgreSQL, Strimzi Kafka, etc. are skipped with a warning unless you write an extension. You'll need to add equivalent services manually via the `services:` section in config.
 - **Bitnami images** — often need replacing with vanilla equivalents via `overrides:`. Bitnami images have opinions about environment variables, init scripts, and volume paths that don't always translate well.
@@ -166,7 +174,7 @@ See [Limitations](limitations.md) for the distribution-level summary, or [docs.d
 
 ## Ingress controllers — details {#ingress-controllers}
 
-Compatibility was covered [above](#before-you-start-ingress-controller). This section documents annotation coverage and configuration.
+Still here? Good. This section documents annotation coverage and configuration — the part where you discover which annotations survived the trip and which ones didn't.
 
 ### Annotations handled
 
@@ -193,28 +201,28 @@ Without this, helmfile2compose won't recognize the class and the Ingress is skip
 
 ## Recommended workflow
 
+If you've made it this far and your stack boots, congratulations — you are now a maintainer of something that was never meant to exist. Here's how to keep it from collapsing:
+
 1. **One helmfile, two environments.** Keep your K8s environment as-is. Add a `compose` environment that disables cluster-only components. Same charts, same values (mostly), different targets.
 
 2. **Ship a `generate-compose.sh`.** A wrapper script that downloads dekube-manager, installs helmfile2compose + extensions, runs the conversion, and maybe generates secrets. See stoatchat-platform or lasuite-platform for examples.
 
 3. **Ship a `dekube.yaml.template`.** Pre-configure excludes, overrides, and volume mappings that are specific to your project. The generate script copies it to `dekube.yaml` on first run. Users then customize their copy.
 
-4. **Pin a release.** Use `--distribution-version` in dekube-manager and `==version` for extensions. Don't point at `main`. The tool mutates between releases — that's documented in the changelog, which is more than most ecosystems offer. Pin your versions. The heretic pins his own.
+4. **Pin a release.** Use `--distribution-version` in dekube-manager and `==version` for extensions. Don't point at `latest`. The tool mutates between releases — that's documented in the changelog, which is more than most ecosystems offer. Pin your versions. I don't — but you should be aware that my sanity left a long time ago, by now. The heretic pins his own.
 
-## The two projects that caused this to exist
+## Compatible projects
 
 - **[stoatchat-platform](https://github.com/baptisterajaut/stoatchat-platform)** — 15 services. The first patient. Worked on the first try, which was the most dangerous outcome.
 - **[lasuite-platform](https://github.com/baptisterajaut/lasuite-platform)** — 22 services + 11 init jobs. The second patient. Tentacles started appearing around the volumeClaimTemplates.
 
 Both ship with `generate-compose.sh` and `dekube.yaml.template`. Reading their setup is probably more useful than anything I could write here.
 
+Then it went very wrong on my own proprietary helmfile — operators, SOPS encryption, multi-environment, the full horror — and now even **[mijn-bureau-infra](https://github.com/MinBZK/mijn-bureau-infra)** (~30 services, nested helmfiles, Bitnami everywhere) seems to work with it. See [About](https://docs.dekube.io/about/) for the full explanation of how this went wrong.
+
 ## Garbage in, garbage out
 
-helmfile2compose does **zero validation** of your helmfile output. If your manifests reference a ConfigMap that doesn't exist, a Secret with a missing key, or a Service pointing at a non-existent Deployment — helmfile2compose will crash with an ugly Python traceback, not a helpful error message.
-
-This is by design. Error handling for malformed K8s manifests is not helmfile2compose's job — it would massively increase complexity for something that `helmfile lint`, `helm template --validate`, and `kubectl apply --dry-run` already do. helmfile2compose assumes its input is valid. If it isn't, the consequences are yours.
-
-**Make sure your helmfile works on a real Kubernetes cluster first.** A real runtime — one with an actual apiserver, actual controllers, actual sanity — should have validated the output before helmfile2compose ever sees it. helmfile2compose is a downstream consumer, not a linter. Fix your helmfile, re-render, re-convert. Actions, consequences.
+The engine does **zero validation** of its input. Bad manifests in, ugly Python traceback out. Make sure your helmfile works on a real Kubernetes cluster before feeding it to dekube — it's a downstream consumer, not a linter. See [Concepts — No validation by design](https://docs.dekube.io/understand/concepts/#no-validation-by-design) for the full sermon.
 
 ## Final warning
 

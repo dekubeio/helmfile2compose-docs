@@ -2,6 +2,8 @@
 
 All persistent configuration lives in `dekube.yaml`. This file is created on first run and preserved across re-runs. User edits are never overwritten.
 
+This is your territory. The engine converts; the config file is where you tell it what to ignore, what to override, and what to pretend was never there. Think of it as the leash on a machine that has no business existing — short enough to control, long enough to be useful.
+
 ## Full example
 
 ```yaml
@@ -52,7 +54,7 @@ services:
 
 ## Engine keys
 
-The following keys are documented in the engine reference — they work identically in helmfile2compose:
+These are the controls that let you steer the heresy — what to exclude, what to override, what to pretend doesn't exist. All documented in the engine reference; they work identically in helmfile2compose:
 
 - **[`name`](https://docs.dekube.io/reference/config/#full-schema)** — compose project name (auto-detected on first run)
 - **[`volume_root`](https://docs.dekube.io/reference/config/#full-schema)** — base path for PVC bind mounts (default: `./data`)
@@ -70,7 +72,7 @@ See the **[full engine configuration reference](https://docs.dekube.io/reference
 
 ## Distribution-specific keys
 
-These keys are read by [dekube-manager](https://manager.dekube.io/docs/), not by the engine itself.
+These keys are for the package manager, not the engine. The engine doesn't care what version it is; the manager cares so you don't wake up to a breaking change on a Tuesday morning.
 
 ### `distribution_version`
 
