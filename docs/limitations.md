@@ -12,7 +12,7 @@ nerdctl compose silently ignores network aliases. Without the [`flatten-internal
 
 ### Startup ordering
 
-Init containers become separate services with `restart: on-failure` — they retry until they succeed, but nothing prevents the main container from starting concurrently. Expect noisy logs on first boot. Everything converges eventually.
+Init containers become separate services with `restart: on-failure`, and the main service uses `depends_on` with `condition: service_completed_successfully` — so Docker Compose starts the main container only after its init containers complete. nerdctl ignores `depends_on`, so on nerdctl everything starts concurrently and converges via retries. Expect noisy logs on first boot with nerdctl.
 
 ### Secrets
 

@@ -43,7 +43,7 @@ services:
       DATABASE_URL: "postgres://db:5432/myapp"
 ```
 
-Replicas are dropped. You're on one machine. Jobs get `restart: on-failure` so they run once and stop.
+Replicas are dropped. You're on one machine. Jobs get `restart: on-failure` so they run once and stop. Resource limits (`cpu`, `memory`) are translated to `deploy.resources.limits`. Readiness/liveness probes become `healthcheck` entries (exec, httpGet, tcpSocket). nerdctl ignores both — Docker Compose enforces them.
 
 ## ConfigMaps
 
@@ -67,7 +67,7 @@ services:
       LOG_LEVEL: "info"
 ```
 
-**As files** (volume mount) — written to disk and bind-mounted. This is how config files like `nginx.conf` or `application.yaml` typically travel.
+**As files** (volume mount) — written to disk and bind-mounted. This is how config files like `nginx.conf` or `application.yaml` typically travel. Both `data` (text) and `binaryData` (base64-encoded binary, e.g. keystores, protobuf) are supported.
 
 Everything is inlined into `compose.yml` rather than using `env_file:` — what you see is what you get.
 
@@ -120,7 +120,7 @@ Paths are customizable in `dekube.yaml`. StatefulSet `volumeClaimTemplates` get 
 
 ## Init containers
 
-Each init container becomes a separate Compose service with `restart: on-failure`. The important difference from Kubernetes: they run concurrently, not sequentially. Everything converges — the retry policy ensures that — but first boot is noisy. This is a deliberate trade-off; see [limitations — startup ordering](limitations.md#startup-ordering) for why.
+Each init container becomes a separate Compose service with `restart: on-failure`. The main service declares `depends_on` with `condition: service_completed_successfully`, so Docker Compose starts it only after init containers complete. nerdctl ignores `depends_on` — there, everything runs concurrently and converges via retries. See [limitations — startup ordering](limitations.md#startup-ordering) for details.
 
 ## Sidecars
 

@@ -99,7 +99,17 @@ Without this mapping, helmfile2compose won't recognize the class and the Ingress
 
 ---
 
-Still stuck? Open an issue — include the error, your `dekube.yaml`, and which extensions you're using.
+## Exit codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | Success |
+| `1` | Fatal error (bad config, missing helmfile, extension conflict) |
+| `2` | Empty output — no services generated (everything excluded or no convertible manifests) |
+
+Useful for `generate-compose.sh` or CI: `python3 helmfile2compose.py ... || exit $?`
+
+## Still stuck? Open an issue — include the error, your `dekube.yaml`, and which extensions you're using.
 
 | Problem | Where to open an issue |
 |---------|------------------------|
