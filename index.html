@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>helmfile2compose — Convert Helmfile and Kubernetes to Docker Compose</title>
-<meta name="description" content="Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. One Python script with 8 bundled extensions. The default dekube distribution for maintainers.">
+<meta name="description" content="Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. One Python script with 9 bundled extensions. The default dekube distribution for maintainers.">
 <meta name="keywords" content="helmfile to docker compose, helm to docker compose, kubernetes to docker compose, convert helmfile, k8s to compose, dekube, helmfile2compose">
 <link rel="canonical" href="https://helmfile2compose.dekube.io/">
 <meta property="og:title" content="helmfile2compose — Convert Helmfile and Kubernetes to Docker Compose">
@@ -21,7 +21,7 @@
   "name": "helmfile2compose",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Linux, macOS, Windows",
-  "description": "Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. One Python script with 8 bundled extensions.",
+  "description": "Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. One Python script with 9 bundled extensions.",
   "url": "https://helmfile2compose.dekube.io",
   "downloadUrl": "https://github.com/dekubeio/helmfile2compose/releases/latest",
   "softwareRequirements": "Python 3.10+",
@@ -57,7 +57,7 @@
   <p>
     The dekube core engine converts nothing on its own. It defines contracts
     and orchestrates extensions. <code>helmfile2compose</code> is the default
-    distribution &mdash; core + 8 bundled extensions assembled into a single
+    distribution &mdash; core + 9 bundled extensions assembled into a single
     <code>helmfile2compose.py</code> at build time. One script, zero
     dependencies beyond Python.
   </p>
@@ -158,6 +158,10 @@
       <div class="card-row">
         <span class="card-label">fix-permissions</span>
         <span class="card-desc">The Custodian &mdash; bind mount permissions</span>
+      </div>
+      <div class="card-row">
+        <span class="card-label">emptydir</span>
+        <span class="card-desc">shared emptyDir volumes between init/sidecar/main</span>
       </div>
     </div>
   </div>
