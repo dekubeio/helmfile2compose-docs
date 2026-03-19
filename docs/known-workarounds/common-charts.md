@@ -137,7 +137,7 @@ This is a full replacement, not a tweak. The Bitnami Redis chart's value proposi
 
 **Chart:** `bitnami/keycloak`
 
-The Bitnami Keycloak chart wraps the standard Keycloak image with an init container (`prepare-write-dirs`) that copies configuration to emptyDir volumes, and reads admin/database passwords from mounted Secret files. In compose, the emptyDir copy init fails (no shared emptyDir between services), and the Secret file mounts may not exist.
+The Bitnami Keycloak chart wraps the standard Keycloak image with an init container (`prepare-write-dirs`) that copies configuration to emptyDir volumes, and reads admin/database passwords from mounted Secret files. The `prepare-write-dirs` init container fails in compose (it copies files that Keycloak doesn't actually need outside of Kubernetes), and the Secret file mounts may not exist.
 
 **Override:**
 
@@ -157,6 +157,6 @@ Replace `<release>` with your Helm release name.
 **What this does:**
 
 - Injects the admin and database passwords as environment variables instead of file mounts
-- Excludes the `prepare-write-dirs` init container that fails on emptyDir
+- Excludes the `prepare-write-dirs` init container (unnecessary in compose)
 
 **Seen in:** mijn-bureau-infra.

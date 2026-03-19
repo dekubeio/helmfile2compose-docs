@@ -30,10 +30,6 @@ Not converted. No compose equivalent. People use host crontab entries, sleep-loo
 
 Linux hostnames are limited to 63 characters. Compose uses the service name as the container hostname, and Helm-generated names can easily exceed that limit. dekube automatically sets a truncated `hostname:` on affected services to avoid `sethostname: invalid argument` failures. The compose service name itself is unchanged — only the container hostname is shortened.
 
-### emptyDir volumes
-
-Not shared between init containers and the main container in compose. This matters most when an init container prepares data (seeds a cache, renders templates, copies config) that the main container expects to find on startup. Map to a named volume manually if needed.
-
 ### Bind mount permissions
 
 Linux file permissions — the last thing you expect to fight after converting an entire orchestrator. Handled automatically by the bundled `fix-permissions` transform — non-root containers get a `chown` init service. No manual intervention needed in most cases.

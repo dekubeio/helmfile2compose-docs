@@ -54,7 +54,7 @@ See [Getting started](getting-started.md) for the full setup guide.
 |------|------------|
 | [kubernetes2simple](https://github.com/dekubeio/kubernetes2simple) | Turnkey distribution — helmfile2compose + all extensions + automagic bootstrap script. |
 | [dekube-engine](https://github.com/dekubeio/dekube-engine) | Bare conversion engine — empty registries, no opinions. |
-| [helmfile2compose](https://github.com/dekubeio/helmfile2compose) | This distribution — core + 8 bundled extensions → single `helmfile2compose.py`. |
+| [helmfile2compose](https://github.com/dekubeio/helmfile2compose) | This distribution — core + 9 bundled extensions (the Eight Monks + emptydir transform) → single `helmfile2compose.py`. |
 | [dekube-manager](https://github.com/dekubeio/dekube-manager) | Package manager — downloads distribution + extensions, resolves dependencies. |
 | [Extension catalogue](https://docs.dekube.io/catalogue/) | Single-file modules: providers, converters, transforms, rewriters. |
 | [dekube-docs](https://docs.dekube.io/) | Engine documentation, extension development guides. |

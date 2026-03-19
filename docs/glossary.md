@@ -17,7 +17,7 @@ Quick reference for terms used across this documentation. If a word sounds like 
 :   The process of routing each K8s manifest to the converter (or provider, or indexer) that handles its `kind`. Converters are sorted by *priority* (lower = earlier) and each manifest is handed to the first converter that claims its kind. "Dispatch loop" = the core engine iterating over all manifests and calling the appropriate `convert()` method.
 
 **distribution**
-:   A packaged combination of *dekube-engine* + a set of bundled extensions, concatenated into a single `.py` file. The default distribution is `helmfile2compose` (core + the *Eight Monks*). `kubernetes2simple` is a stacked distribution (helmfile2compose + all official extensions). Think of it like a K8s distribution (k3s, EKS) vs the bare apiserver.
+:   A packaged combination of *dekube-engine* + a set of bundled extensions, concatenated into a single `.py` file. The default distribution is `helmfile2compose` (core + the *Eight Monks* + the emptydir transform). `kubernetes2simple` is a stacked distribution (helmfile2compose + all official extensions). Think of it like a K8s distribution (k3s, EKS) vs the bare apiserver.
 
 **emulation boundary**
 :   The line between what h2c can convert and what it cannot. *Tier 1* (flattened): K8s declarations materialized as compose equivalents. *Tier 2* (ignored): operational K8s features that don't affect app behavior (RBAC, HPA, NetworkPolicies). *Tier 3* (the wall): anything that requires a live kube-apiserver at runtime — now breachable via the [fake-apiserver](https://docs.dekube.io/catalogue/#fake-apiserver) extension, which we do not endorse, recommend, or acknowledge. See [Concepts](https://docs.dekube.io/concepts/#the-emulation-boundary).
@@ -32,7 +32,7 @@ Quick reference for terms used across this documentation. If a word sounds like 
 :   The bare conversion engine — pipeline, extension loader, CLI, empty registries. Converts nothing on its own. Users never interact with it directly; they use a *distribution*. Extension developers and distribution builders work with dekube-engine. Produces `dekube.py`.
 
 **helmfile2compose**
-:   The default *distribution* — dekube-engine + the *Eight Monks*, assembled into `helmfile2compose.py`. The ecosystem is called [dekube](https://dekube.io); "helmfile2compose" specifically refers to this distribution.
+:   The default *distribution* — dekube-engine + the *Eight Monks* + the emptydir transform, assembled into `helmfile2compose.py`. The ecosystem is called [dekube](https://dekube.io); "helmfile2compose" specifically refers to this distribution.
 
 **indexer** (IndexerConverter)
 :   A converter subtype that populates `ConvertContext` lookups (e.g. `ctx.configmaps`, `ctx.secrets`, `ctx.services`) without producing any output. Indexers run first (default priority 50) so that later converters and providers can resolve references. The four bundled indexers handle ConfigMap, Secret, PVC, and Service.
@@ -68,7 +68,7 @@ Quick reference for terms used across this documentation. If a word sounds like 
 :   A K8s resource (Secret, ConfigMap) that doesn't come from the original manifests but is *created by a converter* during conversion. Example: the cert-manager converter generates Certificate Secrets that didn't exist in the input manifests. Other converters and providers can then reference these synthetic resources as if they were real.
 
 **The Eight Monks**
-:   The eight extensions bundled in the helmfile2compose distribution. Four indexers (Librarian, Guardian, Binder, Weaver), one workload provider (Builder), one ingress rewriter (Herald), one ingress provider (Gatekeeper), and one transform (Custodian). Together they convert standard K8s manifests — everything beyond standard resources requires additional extensions.
+:   The eight original extensions extracted from dekube-engine into the helmfile2compose distribution. Four indexers (Librarian, Guardian, Binder, Weaver), one workload provider (Builder), one ingress rewriter (Herald), one ingress provider (Gatekeeper), and one transform (Custodian). The distribution also bundles the [emptydir](https://docs.dekube.io/catalogue/#emptydir) transform — not a monk (it was never part of the engine), but it sits in the council nonetheless.
 
 **transform**
 :   An extension that post-processes the final compose output *after* all converters have run. Transforms see the complete `compose_services` dict and `ingress_entries` list and can mutate them in place. Example: `flatten-internal-urls` strips network aliases and rewrites FQDNs. Transforms have no `kinds` — they operate on the output, not the input.
