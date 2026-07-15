@@ -19,7 +19,7 @@ I've been there. The first time, I ignored the request. The second time, I built
     | Not sure where to file | [helmfile2compose](https://github.com/dekubeio/helmfile2compose/issues) — I'll triage |
 
 !!! note "helmfile2compose vs dekube-engine"
-    **dekube-engine** is the bare conversion engine — an empty pipeline with no built-in converters. **helmfile2compose** is the distribution: dekube-engine bundled with 8 extensions (workloads, indexers, HAProxy, Caddy) into a single `helmfile2compose.py`. This is what you download, run, and ship. When this page says "helmfile2compose", it means the distribution — the thing you actually use.
+    **dekube-engine** is the bare conversion engine — an empty pipeline with no built-in converters. **helmfile2compose** is the distribution: dekube-engine bundled with 9 extensions (workloads, indexers, HAProxy, Caddy, emptyDir + fix-permissions transforms) into a single `helmfile2compose.py`. This is what you download, run, and ship. When this page says "helmfile2compose", it means the distribution — the thing you actually use.
 
 > *He who renders the celestial into the mundane does not ascend — he merely ensures that both realms now share his suffering equally.*
 >

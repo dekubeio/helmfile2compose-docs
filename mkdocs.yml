@@ -1,6 +1,6 @@
 site_name: helmfile2compose — Convert Helmfile to Docker Compose
 site_url: https://helmfile2compose.dekube.io/docs/
-site_description: "Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. The default dekube distribution — one Python script, 8 bundled extensions, one command."
+site_description: "Convert helmfiles, Helm charts, and Kubernetes manifests to compose.yml. The default dekube distribution — one Python script, 9 bundled extensions, one command."
 repo_url: https://github.com/dekubeio/helmfile2compose
 repo_name: dekubeio/helmfile2compose
 

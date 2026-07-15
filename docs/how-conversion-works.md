@@ -73,7 +73,7 @@ Everything is inlined into `compose.yml` rather than using `env_file:` — what 
 
 ## Secrets
 
-Same mechanics as ConfigMaps. The interesting case is when a Secret *doesn't exist* in the rendered output — an operator was supposed to create it, or Helm's `lookup` tried to fetch it from a cluster that isn't there. When this happens, a `changeme` placeholder is inserted. Grep your `compose.yml` after conversion.
+Same mechanics as ConfigMaps. The interesting case is when a Secret *doesn't exist* in the rendered output — an operator was supposed to create it, or Helm's `lookup` tried to fetch it from a cluster that isn't there. When this happens, the engine logs a warning to stderr (`secretKeyRef '<name>/<key>' on <workload> could not be resolved`) and drops the env var entirely — no placeholder, no value. Grep your conversion output for `could not be resolved` to catch these.
 
 Your secrets are now plain text in a YAML file. This is what you signed up for. See [limitations — secrets](limitations.md#secrets) for the full existential crisis.
 
