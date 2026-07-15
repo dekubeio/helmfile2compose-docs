@@ -1,8 +1,14 @@
+---
+description: "How helmfile2compose converts each Kubernetes resource — workloads, ConfigMaps, Secrets, Services, Ingress, PVCs, init containers, CRDs — step by step."
+---
+
 # How the conversion works
 
 Don't misunderstand me. Converting Kubernetes manifests to Docker Compose is an act of heresy. I know it, and [that makes it worse](https://docs.dekube.io/about/#part-i--the-confession).
 
 But you're here, and you want to know what happened to your resources when they went through the tentacle machine. Each section shows what goes in, what comes out, and why it looks like that. For the full architectural deep dive, see the [engine docs](https://docs.dekube.io/understand/architecture/). For what gets lost in translation, see [limitations](limitations.md).
+
+If your source is a Helm chart rather than raw manifests, [the homelab Helm-chart walkthrough](https://k2s.dekube.io/guides/helm-chart-to-docker-compose/) shows the same conversion end-to-end with a real chart, with no cluster in the loop.
 
 > *"To read the old hymns in the new tongue is not blasphemy — it is archaeology. Every verse that survived the translation reveals what mattered; every verse that was lost reveals what never did."*
 >

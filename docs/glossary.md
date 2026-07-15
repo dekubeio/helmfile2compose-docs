@@ -1,3 +1,7 @@
+---
+description: "Glossary of dekube and helmfile2compose terms: converters, providers, indexers, transforms, rewriters, distributions, and the Eight Monks explained."
+---
+
 # Glossary
 
 Quick reference for terms used across this documentation. If a word sounds like it belongs in a Lovecraftian grimoire, it probably does — but it also has a technical meaning.

@@ -1,3 +1,7 @@
+---
+description: "Running helmfile2compose alongside existing Compose infrastructure: shared networks, disabling Caddy, multiple projects, and the docker compose -p pitfall."
+---
+
 # Advanced usage
 
 ## Cohabiting with existing infrastructure

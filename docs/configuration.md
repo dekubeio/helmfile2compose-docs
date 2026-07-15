@@ -1,3 +1,7 @@
+---
+description: "The dekube.yaml reference for helmfile2compose: engine keys plus distribution-specific keys like distribution_version and depends, with a full example."
+---
+
 # Configuration reference
 
 All persistent configuration lives in `dekube.yaml`. This file is created on first run and preserved across re-runs. User edits are never overwritten.

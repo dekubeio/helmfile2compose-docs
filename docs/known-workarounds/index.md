@@ -1,3 +1,7 @@
+---
+description: "Known workarounds for Helm charts that fight back when converted with helmfile2compose: an index of chart-specific fixes and exclusions."
+---
+
 # Known workarounds
 
 Tentacles everywhere? Yeah, what did you expect. You took an orchestrator designed for planet-scale infrastructure and squeezed it into `docker compose up`. Some things don't fit. Some things fight back. Some things grow new limbs when you're not looking.

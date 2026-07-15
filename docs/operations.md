@@ -1,3 +1,7 @@
+---
+description: "Day-to-day helmfile2compose operations: updating your stack, managing persistent data, using compose.override.yml, and quick fixes for common issues."
+---
+
 # Day-to-day operations
 
 The hard part is behind you — the manifests are converted, the stack boots, the containers talk to each other. Now you just need to keep the thing alive. This covers what happens after your compose setup is running. For initial setup, see your project's deployment doc or [Your project](getting-started.md).

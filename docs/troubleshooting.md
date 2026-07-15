@@ -1,3 +1,7 @@
+---
+description: "Troubleshooting helmfile2compose: installing Helm and Helmfile, nerdctl network alias failures, multi-project alias collisions, and missing Ingress rules."
+---
+
 # Troubleshooting
 
 Something broke — or rather, something *revealed itself*, because it was always broken. You merely summoned it into the light.

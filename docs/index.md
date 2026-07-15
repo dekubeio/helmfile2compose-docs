@@ -1,3 +1,7 @@
+---
+description: "helmfile2compose: the dekube distribution that converts Kubernetes manifests to a working Docker Compose stack. Quick start, docs, and compatible projects."
+---
+
 # helmfile2compose
 
 The distribution that generates a working `docker compose` stack from your Kubernetes manifests. Same charts, same values, one script, one command.

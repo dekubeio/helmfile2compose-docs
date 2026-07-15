@@ -1,3 +1,7 @@
+---
+description: "Converting kube-prometheus-stack to Docker Compose: excluding Grafana's k8s-sidecar, and provisioning dashboards and datasources statically."
+---
+
 # kube-prometheus-stack
 
 kube-prometheus-stack is a Helm chart that deploys Prometheus, Grafana, and a constellation of exporters and operators. Most of it converts cleanly via the [servicemonitor extension](https://docs.dekube.io/catalogue/#servicemonitor). Grafana does not.

@@ -1,3 +1,7 @@
+---
+description: "Setting up helmfile2compose from scratch: requirements, ingress controller support, first run, reviewing dekube.yaml, and the recommended pin-and-ship workflow."
+---
+
 # Using helmfile2compose with your own project
 
 If you need to use this tool, I am truly sorry.

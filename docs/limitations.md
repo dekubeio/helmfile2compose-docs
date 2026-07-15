@@ -1,3 +1,7 @@
+---
+description: "What helmfile2compose can't preserve day-to-day: nerdctl aliases, startup ordering, plaintext secrets, skipped CRDs and CronJobs, bind-mount permissions."
+---
+
 # Limitations
 
 You replaced the perfectly sane orchestra conductor with a horribly mutated chimpanzee and you wonder why the audience needs earplugs.

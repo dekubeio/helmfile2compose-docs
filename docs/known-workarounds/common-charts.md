@@ -1,3 +1,7 @@
+---
+description: "Fixing Helm charts that don't survive conversion cleanly: MinIO's post-job bucket creation, and Bitnami PostgreSQL, Redis, and Keycloak overrides."
+---
+
 # Common charts that don't comply
 
 Some Helm charts — popular, well-maintained, widely deployed — produce manifests that don't survive the flattening intact. Not because helmfile2compose is wrong, but because the charts make assumptions about the runtime that only hold in Kubernetes.
