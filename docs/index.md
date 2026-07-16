@@ -12,7 +12,7 @@ The distribution that generates a working `docker compose` stack from your Kuber
 
 ## What is this?
 
-**helmfile2compose** is a [dekube](https://dekube.io) distribution — the [dekube-engine](https://docs.dekube.io/engine/) bundled with 9 extensions into a single `helmfile2compose.py`. It takes your Kubernetes manifests (from helmfile, Helm, or plain YAML) and produces a `compose.yml` + whatever configfile your proxy server will use, and everything needed to run your stack with `docker compose up`.
+**helmfile2compose** is a [dekube](https://dekube.io) distribution — the [dekube-engine](https://docs.dekube.io/understand/engine/) bundled with 9 extensions into a single `helmfile2compose.py`. It takes your Kubernetes manifests (from helmfile, Helm, or plain YAML) and produces a `compose.yml` + whatever configfile your proxy server will use, and everything needed to run your stack with `docker compose up`.
 
 For the engine internals, extension development, and ecosystem architecture, see [docs.dekube.io](https://docs.dekube.io/).
 

@@ -49,7 +49,7 @@ Note: the `generate-compose.sh` scripts shipped with stoatchat-platform and lasu
 
 Good news: running two (or more) helmfile2compose-generated stacks on the same host is no harder than running one alongside existing infrastructure. Apply the same recipe to each project — `disable_ingress: true`, same `network:`, merge the `Caddyfile-*` fragments — and you're done. Each project gets its own `compose.yml` and its own `dekube.yaml`, completely independent. The desecration scales linearly.
 
-Watch out for **collisions**: host port conflicts (two projects binding the same port — only one wins, exclude the duplicate) and network alias conflicts (short aliases coexist on the same DNS namespace — FQDNs are safe, but short names can round-robin between projects). If something works half the time and breaks the other half, see [Troubleshooting — network alias collisions](https://docs.dekube.io/troubleshooting/#network-alias-collisions-multi-project).
+Watch out for **collisions**: host port conflicts (two projects binding the same port — only one wins, exclude the duplicate) and network alias conflicts (short aliases coexist on the same DNS namespace — FQDNs are safe, but short names can round-robin between projects). If something works half the time and breaks the other half, see [Troubleshooting — network alias collisions](troubleshooting.md#network-alias-collisions-multi-project).
 
 ### Do NOT use `docker compose -p`
 
