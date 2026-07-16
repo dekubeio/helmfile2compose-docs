@@ -126,6 +126,10 @@
 
   <div class="section">
     <h2>The Eight Monks</h2>
+    <p>
+      Eight extensions form the order &mdash; the standard-Kubernetes plumbing
+      every conversion needs, each bearing a title.
+    </p>
     <div class="card-list">
       <div class="card-row">
         <span class="card-label">configmap-indexer</span>
@@ -145,7 +149,7 @@
       </div>
       <div class="card-row">
         <span class="card-label">simple-workload</span>
-        <span class="card-desc">The Builder &mdash; Deployment, StatefulSet, DaemonSet, Job</span>
+        <span class="card-desc">The Builder &mdash; Deployment, StatefulSet, DaemonSet, Job, Pod</span>
       </div>
       <div class="card-row">
         <span class="card-label">haproxy-rewriter</span>
@@ -159,9 +163,15 @@
         <span class="card-label">fix-permissions</span>
         <span class="card-desc">The Custodian &mdash; bind mount permissions</span>
       </div>
+    </div>
+    <p>
+      Bundled alongside the order, but not of it &mdash; a transform, never part
+      of the original engine extraction, shipped from day one:
+    </p>
+    <div class="card-list">
       <div class="card-row">
         <span class="card-label">emptydir</span>
-        <span class="card-desc">shared emptyDir volumes between init/sidecar/main</span>
+        <span class="card-desc">The Quiet One &mdash; shared emptyDir volumes between init/sidecar/main</span>
       </div>
     </div>
   </div>
