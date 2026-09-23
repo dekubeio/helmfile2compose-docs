@@ -65,12 +65,15 @@ These are the controls that let you steer the heresy — what to exclude, what t
 - **[`volumes`](https://docs.dekube.io/reference/config/#full-schema)** — PVC-to-volume mappings (auto-populated on first run)
 - **[`exclude`](https://docs.dekube.io/reference/config/#full-schema)** — workload names to skip (`fnmatch` wildcards)
 - **[`replacements`](https://docs.dekube.io/reference/config/#full-schema)** — global find/replace in env vars, ConfigMap files, and proxy upstreams
-- **[`overrides`](https://docs.dekube.io/reference/config/#full-schema)** — deep merge into generated services (`null` deletes keys)
+- **[`overrides`](https://docs.dekube.io/reference/config/#full-schema)** — deep merge into generated services (`null` deletes keys). Every generated `environment` value gets its `$` doubled (`$$`) so compose doesn't interpolate it, but `overrides:` values stay raw — you keep `${VAR}` compose interpolation there, and a `$secret:` reference inside an override still resolves and escapes correctly.
 - **[`services`](https://docs.dekube.io/reference/config/#full-schema)** — custom compose services added verbatim
 - **[`extensions`](https://docs.dekube.io/reference/config/#per-extension-config-extensions)** — per-extension config (Caddy email/TLS, enable/disable)
 - **[`ingress_types`](https://docs.dekube.io/reference/config/#full-schema)** — custom `ingressClassName` → rewriter mapping
 - **[`disable_ingress`](https://docs.dekube.io/reference/config/#full-schema)** — skip reverse proxy generation
 - **[`network`](https://docs.dekube.io/reference/config/#full-schema)** — external compose network override
+
+!!! note "Upgrading: `$` escaping changed"
+    If you were hand-escaping `$$` in chart values or `replacements:` to work around passwords getting mangled by compose interpolation, remove it now — you'd otherwise get `$$$$`. Conversely, a `${VAR}` you meant for compose interpolation but that arrives through chart values or `replacements:` is now taken literally; move it into `overrides:`, which stays raw.
 
 See the **[full engine configuration reference](https://docs.dekube.io/reference/config/)** for detailed descriptions, examples, placeholders (`$secret:`, `$volume_root`), and legacy key migration.
 

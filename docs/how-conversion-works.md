@@ -122,11 +122,13 @@ services:
       - ./data/myapp-data:/var/lib/myapp
 ```
 
-Paths are customizable in `dekube.yaml`. StatefulSet `volumeClaimTemplates` get the same treatment.
+Paths are customizable in `dekube.yaml`. StatefulSet `volumeClaimTemplates` get the same treatment, registered under the key `<vct>-<sts>` (the same naming Kubernetes itself uses, minus the ordinal — compose runs one replica). An existing config with the older bare `<vct>` key still resolves, with a warning to rename it.
 
 ## Init containers
 
 Each init container becomes a separate Compose service with `restart: on-failure`. The main service declares `depends_on` with `condition: service_completed_successfully`, so Docker Compose starts it only after init containers complete. nerdctl ignores `depends_on` — there, everything runs concurrently and converges via retries. See [limitations — startup ordering](limitations.md#startup-ordering) for details.
+
+**Native sidecars** (initContainers with `restartPolicy: Always`, Kubernetes ≥ 1.28) are the exception: they don't block the main container, so they're converted like a sidecar instead — their own service, `network_mode: container:<main>`, with `depends_on` pointing *at* them rather than the main waiting on them. Known limit: an ordinary one-shot init container can't reach a native sidecar, since the sidecar only joins the main container's network namespace once the main container itself starts.
 
 ## Sidecars
 

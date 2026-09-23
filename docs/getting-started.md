@@ -174,7 +174,7 @@ This section exists to give you false confidence. It worked for two of my platfo
 - **ConfigMaps and Secrets** — resolved inline into environment variables, or generated as files when volume-mounted.
 - **Services** — network aliases (K8s FQDNs resolve natively via compose DNS), alias resolution, port remapping. If your K8s Service remaps port 80 to targetPort 8080, the tool rewrites URLs and env vars automatically.
 - **Ingress** — converted to a Caddy reverse proxy with automatic TLS. Path-based routing, host-based routing, catch-all backends. Backend SSL annotations supported.
-- **PVCs** — registered in config as bind mounts. `volumeClaimTemplates` (StatefulSets) included.
+- **PVCs** — registered in config as bind mounts. `volumeClaimTemplates` (StatefulSets) included, keyed `<vct>-<sts>` — an existing config with the older bare `<vct>` key still works, with a rename warning.
 - **CRDs** — with [extensions](https://docs.dekube.io/catalogue/), Keycloak, cert-manager, and trust-manager CRDs are fully converted.
 
 ## What needs manual help

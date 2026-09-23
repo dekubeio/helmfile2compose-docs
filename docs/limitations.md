@@ -18,6 +18,8 @@ nerdctl compose silently ignores network aliases. Without the [`flatten-internal
 
 Init containers become separate services with `restart: on-failure`, and the main service uses `depends_on` with `condition: service_completed_successfully` — so Docker Compose starts the main container only after its init containers complete. nerdctl ignores `depends_on`, so on nerdctl everything starts concurrently and converges via retries. Expect noisy logs on first boot with nerdctl.
 
+**Native sidecars** (initContainers with `restartPolicy: Always`, K8s ≥ 1.28) are the exception — they run alongside the main container instead of blocking it, so they become their own service with `depends_on` pointing the other way. Known limit: a one-shot init container can't reach a native sidecar, since the sidecar joins the main container's network namespace only once the main container starts.
+
 ### Secrets
 
 Kubernetes Secrets are dumped as plain-text environment variables into `compose.yml`. The security model you carefully built is now a flat file on your laptop. Do not commit it to version control.
