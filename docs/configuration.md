@@ -113,6 +113,6 @@ depends:
   - trust-manager
 ```
 
-Bare names pull the latest release. Pin with `==version` for reproducibility (recommended — see [Your project](getting-started.md#recommended-workflow)). Tags can be moved; for an immutable pin, use a commit SHA (`keycloak==6a556e2`). An extension the distribution already bundles is skipped, unless you pin it — the pinned copy then overrides the bundled one. An extension that declares a `min_engine` newer than the engine being installed is refused (checked for `distribution: engine` only).
+Bare names pull the latest release. Pin with `==version` for reproducibility (recommended — see [Your project](getting-started.md#recommended-workflow)). Tags can be moved; for an immutable pin, use a commit SHA (`keycloak==6a556e2`). An extension the distribution already bundles is skipped, unless you pin it — the pinned copy then overrides the bundled one. An extension that declares a `min_engine` newer than the engine being installed is refused (checked for `distribution: engine` only). Downloads are retried on connection errors, timeouts and HTTP 5xx (up to three retries, 1s/2s/4s apart), never on a 4xx such as a 404, and each file is written to a temp file then renamed into place, so an interrupted install doesn't leave a truncated extension for the next run to reuse.
 
 See [dekube-manager — declarative dependencies](https://manager.dekube.io/docs/#declarative) for override behavior and details.
