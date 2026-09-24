@@ -16,7 +16,7 @@ If your source is a Helm chart rather than raw manifests, [the homelab Helm-char
 
 ## Workloads
 
-Deployments, StatefulSets, DaemonSets — they all become Compose services. The distinction between them only matters when you have a scheduler, multiple nodes, and opinions about pod identity. You have none of these.
+Deployments, StatefulSets, DaemonSets, bare Pods — they all become Compose services. The distinction between them only matters when you have a scheduler, multiple nodes, and opinions about pod identity. You have none of these.
 
 ```yaml
 # What goes in
@@ -136,7 +136,7 @@ Sidecar containers share a network namespace in Kubernetes — they talk over `l
 
 ## CRDs
 
-CRDs are resources that only exist because an operator is watching them. In Compose, there are no operators — so bundled extensions emulate what the operator *would have done*:
+CRDs are resources that only exist because an operator is watching them. In Compose, there are no operators — so extensions emulate what the operator *would have done*. None of these are bundled in this distribution; grab them via `--extensions-dir` (see [Getting started](getting-started.md)):
 
 - **cert-manager** — generates self-signed certificates as files
 - **Keycloak** — converts realm imports into container configuration
