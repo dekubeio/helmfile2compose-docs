@@ -196,7 +196,7 @@ Still here? Good. This section documents annotation coverage and configuration �
 
 | Controller | Annotations |
 |------------|-------------|
-| **HAProxy** | `haproxy.org/path-rewrite` → strip prefix (scoped per path on multi-path rules), `haproxy.org/server-ssl` + `server-ca` → backend TLS (the CA Secret is written to disk and Caddy uses its `ca.crt` key, or its only key), `server-sni` |
+| **HAProxy** | `haproxy.org/path-rewrite` → strip prefix (scoped per path on multi-path rules), `haproxy.org/server-ssl` + `server-ca` → backend TLS (the CA Secret is written to disk and Caddy uses its `ca.crt` key, or its only key; a Secret missing from the manifests warns — put `ca.crt` in `./secrets/<name>/` yourself), `server-sni` |
 | **Nginx** | `rewrite-target` (when it's a prefix strip, capture groups included — other targets warn), `backend-protocol`, `enable-cors`, `proxy-body-size`, `configuration-snippet` (partial). Auth and allow/deny-list annotations warn: those routes are unprotected in compose. |
 | **Traefik** | Backend scheme from the Service (`service.serversscheme`, port 443 or an `https*` port name — `router.tls` is router-side TLS, which Caddy does anyway), `router.middlewares` → strip prefix for StripPrefix `Middleware`s found in the manifests. Other middlewares warn, auth ones loudly. Standard Ingress path rules. |
 
