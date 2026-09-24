@@ -34,7 +34,7 @@ Not converted. No compose equivalent. People use host crontab entries, sleep-loo
 
 ### Long service names
 
-Linux hostnames are limited to 63 characters. Compose uses the service name as the container hostname, and Helm-generated names can easily exceed that limit. dekube automatically sets a truncated `hostname:` on affected services to avoid `sethostname: invalid argument` failures. The compose service name itself is unchanged — only the container hostname is shortened.
+Linux hostnames are limited to 63 characters. Compose uses the service name as the container hostname, and Helm-generated names can easily exceed that limit. dekube automatically sets a truncated `hostname:` on affected services to avoid `sethostname: invalid argument` failures. The compose service name itself is unchanged — only the container hostname is shortened. Sidecars, which share the main container's network namespace and hostname, get no `hostname:` — Docker refuses one there.
 
 ### Bind mount permissions
 
