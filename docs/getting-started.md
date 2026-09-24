@@ -63,7 +63,7 @@ There's also a fourth category: **live CRDs** that are fundamentally incompatibl
 Ingress is not optional either.
 
 !!! note "kubernetes2simple"
-    [kubernetes2simple](https://k2s.dekube.io/) exists as an all-inclusive distribution — helmfile2compose + every extension, one script, zero config. It's convenient for a quick test, but probably not what you want long-term: it enables transforms like `bitnami` that silently replace images, which may not be desired for your stack. As a maintainer, you'll want to pick your extensions deliberately.
+    [kubernetes2simple](https://k2s.dekube.io/) exists as an all-inclusive distribution — helmfile2compose + most of the remaining official extensions, one script, zero config. It's convenient for a quick test, but probably not what you want long-term: it enables transforms like `bitnami` that silently replace images, which may not be desired for your stack. As a maintainer, you'll want to pick your extensions deliberately.
 
 **fix-permissions** is bundled with the distribution and active by default. It generates a busybox init service that fixes bind mount ownership for non-root containers — in most cases a net gain. If you don't want it, disable it in `dekube.yaml`:
 
