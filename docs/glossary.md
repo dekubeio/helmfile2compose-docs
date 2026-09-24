@@ -21,7 +21,7 @@ Quick reference for terms used across this documentation. If a word sounds like 
 :   The process of routing each K8s manifest to the converter (or provider, or indexer) that handles its `kind`. Converters are sorted by *priority* (lower = earlier) and each manifest is handed to the first converter that claims its kind. "Dispatch loop" = the core engine iterating over all manifests and calling the appropriate `convert()` method.
 
 **distribution**
-:   A packaged combination of *dekube-engine* + a set of bundled extensions, concatenated into a single `.py` file. The default distribution is `helmfile2compose` (core + the *Eight Monks* + the emptydir transform). `kubernetes2simple` is a stacked distribution (helmfile2compose + all official extensions). Think of it like a K8s distribution (k3s, EKS) vs the bare apiserver.
+:   A packaged combination of *dekube-engine* + a set of bundled extensions, concatenated into a single `.py` file. The default distribution is `helmfile2compose` (core + the *Eight Monks* + the emptydir transform). `kubernetes2simple` is a stacked distribution (helmfile2compose + most of the other official extensions). Think of it like a K8s distribution (k3s, EKS) vs the bare apiserver.
 
 **emulation boundary**
 :   The line between what dekube can convert and what it cannot. *Tier 1* (flattened): K8s declarations materialized as compose equivalents. *Tier 2* (ignored): operational K8s features that don't affect app behavior (RBAC, HPA, NetworkPolicies). *Tier 3* (the wall): anything that requires a live kube-apiserver at runtime — now breachable via the [fake-apiserver](https://docs.dekube.io/catalogue/#fake-apiserver) extension, which we do not endorse, recommend, or acknowledge. See [Concepts](https://docs.dekube.io/understand/concepts/#the-emulation-boundary).
@@ -48,7 +48,7 @@ Quick reference for terms used across this documentation. If a word sounds like 
 :   The extension that produces the reverse proxy service and its config file from *ingress entries*. The default is CaddyProvider (generates a Caddy service + Caddyfile). An [NginxProvider](https://github.com/dekubeio/dekube-provider-nginx) is also available (generates an Nginx service + `nginx.conf`). Replacing the provider swaps the entire reverse proxy backend. Not to be confused with *ingress rewriter*.
 
 **ingress rewriter** (IngressRewriter)
-:   An extension that translates controller-specific Ingress annotations (HAProxy, nginx, traefik) into *ingress entries*. Each rewriter targets one ingress controller via `ingressClassName`. Not to be confused with *ingress provider* — the rewriter reads annotations, the provider builds the proxy.
+:   An extension that translates controller-specific Ingress annotations (HAProxy, nginx, traefik) into *ingress entries*. Each rewriter targets one ingress controller via `ingressClassName` (or, for a classless Ingress, the controller's annotation prefix). Not to be confused with *ingress provider* — the rewriter reads annotations, the provider builds the proxy.
 
 **named volume**
 :   A Docker-managed volume (`postgres-data:/var/lib/postgresql/data`). Docker handles the storage location. Contrast with *bind mount*.
