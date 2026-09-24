@@ -75,6 +75,9 @@ These are the controls that let you steer the heresy — what to exclude, what t
 !!! note "Upgrading: `$` escaping changed"
     If you were hand-escaping `$$` in chart values or `replacements:` to work around passwords getting mangled by compose interpolation, remove it now — you'd otherwise get `$$$$`. Conversely, a `${VAR}` you meant for compose interpolation but that arrives through chart values or `replacements:` is now taken literally; move it into `overrides:`, which stays raw.
 
+!!! note "Upgrading past helmfile2compose v3.4.0"
+    Regenerating with a newer release changes a few things you can see: `env` now wins over `envFrom`; every `$` in container commands is escaped (a `${VAR}` meant for compose goes in `overrides:`); mounts with `items` move to `configmaps/<name>_<hash>/`; PVC `subPath` is honoured (data already at the volume root keeps the old mount, with a warning); an extension that fails to load stops the run (exit 1). With the nginx or traefik rewriter loaded, classless Ingresses carrying their annotations now go to them instead of HAProxy. servicemonitor and fake-apiserver users: see the [full list](https://docs.dekube.io/reference/config/#upgrading-from-engine-v170).
+
 See the **[full engine configuration reference](https://docs.dekube.io/reference/config/)** for detailed descriptions, examples, placeholders (`$secret:`, `$volume_root`), and legacy key migration.
 
 ## Distribution-specific keys
@@ -110,6 +113,6 @@ depends:
   - trust-manager
 ```
 
-Bare names pull the latest release. Pin with `==version` for reproducibility (recommended — see [Your project](getting-started.md#recommended-workflow)).
+Bare names pull the latest release. Pin with `==version` for reproducibility (recommended — see [Your project](getting-started.md#recommended-workflow)). Tags can be moved; for an immutable pin, use a commit SHA (`keycloak==6a556e2`). An extension the distribution already bundles is skipped, unless you pin it — the pinned copy then overrides the bundled one. An extension that declares a `min_engine` newer than the engine being installed is refused (checked for `distribution: engine` only).
 
 See [dekube-manager — declarative dependencies](https://manager.dekube.io/docs/#declarative) for override behavior and details.
