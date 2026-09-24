@@ -79,7 +79,7 @@ The Caddyfile is empty, or some Ingress manifests are silently skipped. This mea
 
 **Diagnose:**
 
-1. Check stderr output — look for `"unknown ingressClassName"` or `"no rewriter matched"` warnings.
+1. Check stderr output — look for a `"Ingress '<name>': no matching rewriter, skipped"` warning.
 2. Verify which ingress controller your Ingress manifests use: `ingressClassName` in the spec, or `kubernetes.io/ingress.class` annotation.
 3. Check that the matching rewriter is installed:
 
