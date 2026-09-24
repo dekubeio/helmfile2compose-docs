@@ -47,24 +47,61 @@ overrides:
       - ./configmaps/kube-prometheus-stack-grafana-dashboards-custom/my-dashboard.json:/var/lib/grafana/dashboards/custom/my-dashboard.json:ro
       - ./configmaps/kube-prometheus-stack-grafana/dashboardproviders.yaml:/etc/grafana/provisioning/dashboards/dashboardproviders.yaml:ro
       - ./configmaps/kube-prometheus-stack-grafana-config-dashboards/provider.yaml:/etc/grafana/provisioning/dashboards/sc-dashboardproviders.yaml:ro
-      - ./configmaps/kube-prometheus-stack-grafana-datasource/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml:ro
+      - ./configmaps/kube-prometheus-stack-grafana/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
 ```
 
-Adapt the secret name, dashboard paths, and **Grafana image version** to your setup — the version shown above is a snapshot that will go stale.
+Adapt the secret name, dashboard paths, and **Grafana image version** to your setup — the version shown above is a snapshot that will go stale. The `dashboardproviders.yaml`, `datasources.yaml` and `my-dashboard.json` files only exist once you've set the chart values below.
+
+helmfile2compose writes a ConfigMap to `configmaps/<name>/` only when a container mounts it — and into `configmaps/<name>_<hash>/` when that mount uses `items`. The ConfigMaps above are mounted without `items`, so their paths are plain `configmaps/<name>/`. The ones the sidecars read through the API (the chart's datasource and built-in dashboards) are never mounted, so they never reach the disk.
 
 ## Datasource provisioning
 
-In K8s, the k8s-sidecar populates `/etc/grafana/provisioning/datasources/` from a labeled ConfigMap. In compose, create the file statically.
+In K8s, the k8s-sidecar populates `/etc/grafana/provisioning/datasources/` from the labeled `kube-prometheus-stack-grafana-datasource` ConfigMap, fetched through the API. No container mounts it, so it isn't written to disk. Have the Grafana subchart render the datasource into its own ConfigMap instead, in the values of your compose environment:
 
-The datasource ConfigMap is typically rendered by the Helm chart and already present in your manifests — helmfile2compose writes it to `configmaps/kube-prometheus-stack-grafana-datasource/`. Mount it as shown in the override above.
+```yaml
+# kube-prometheus-stack values (compose environment)
+grafana:
+  sidecar:
+    datasources:
+      enabled: false
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://kube-prometheus-stack-prometheus.monitoring:9090
+          isDefault: true
+```
+
+The Grafana container mounts that key, so it lands in `configmaps/kube-prometheus-stack-grafana/datasources.yaml`. Mount it as shown in the override above.
 
 If the datasource references the Prometheus K8s Service by its FQDN (e.g. `kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090`), it resolves natively via network aliases — no replacement needed.
 
 ## Dashboard provisioning
 
-Same pattern: the Helm chart renders dashboard JSON as ConfigMaps. helmfile2compose writes them to `configmaps/`. Mount each dashboard JSON into Grafana's dashboard directory and provide a `dashboardproviders.yaml` that points at it.
+Same story: the chart's built-in dashboards are ConfigMaps only the sidecar reads, so they aren't written. Declare the dashboards you want and their provider through the Grafana subchart values. It then mounts them into the Grafana container, and helmfile2compose writes them out:
 
-The chart's default `dashboardproviders.yaml` ConfigMap usually works as-is — mount it from `configmaps/kube-prometheus-stack-grafana/dashboardproviders.yaml`.
+```yaml
+# kube-prometheus-stack values (compose environment)
+grafana:
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: custom
+          folder: custom
+          type: file
+          options:
+            path: /var/lib/grafana/dashboards/custom
+  dashboards:
+    custom:
+      my-dashboard:
+        json: |
+          { "title": "My dashboard" }
+```
+
+The provider lands in `configmaps/kube-prometheus-stack-grafana/dashboardproviders.yaml` and each dashboard in `configmaps/kube-prometheus-stack-grafana-dashboards-<provider>/<name>.json`. Mount them as shown in the override above.
 
 ## Other components to exclude
 
