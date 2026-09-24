@@ -173,7 +173,7 @@ This section exists to give you false confidence. It worked for two of my platfo
 - **Deployments, StatefulSets, DaemonSets, Jobs, bare Pods** — converted to compose services with the right image, env, command, volumes, and ports. Init containers and sidecars get their own services.
 - **ConfigMaps and Secrets** — resolved inline into environment variables, or generated as files when volume-mounted.
 - **Services** — network aliases (K8s FQDNs resolve natively via compose DNS), alias resolution, port remapping. If your K8s Service remaps port 80 to targetPort 8080, the tool rewrites URLs and env vars automatically.
-- **Ingress** — converted to a Caddy reverse proxy with automatic TLS. Path-based and host-based routing. Backend SSL annotations supported. Catch-alls (`spec.defaultBackend`, rules without a host) are not: they are skipped — with a warning from HAProxy, silently by the nginx and traefik rewriters. Give them a host.
+- **Ingress** — converted to a Caddy reverse proxy with automatic TLS. Path-based and host-based routing. Backend SSL annotations supported. Catch-alls (`spec.defaultBackend`, rules without a host) are not: they are skipped with a warning. Give them a host.
 - **PVCs** — registered in config as bind mounts. `volumeClaimTemplates` (StatefulSets) included, keyed `<vct>-<sts>` — an existing config with the older bare `<vct>` key still works, with a rename warning.
 - **CRDs** — with [extensions](https://docs.dekube.io/catalogue/), Keycloak, cert-manager, and trust-manager CRDs are fully converted.
 
@@ -197,7 +197,7 @@ Still here? Good. This section documents annotation coverage and configuration �
 | Controller | Annotations |
 |------------|-------------|
 | **HAProxy** | `haproxy.org/path-rewrite` → strip prefix (scoped per path on multi-path rules), `haproxy.org/server-ssl` + `server-ca` → backend TLS (the CA Secret is written to disk and Caddy uses its `ca.crt` key, or its only key; a Secret missing from the manifests warns — put `ca.crt` in `./secrets/<name>/` yourself), `server-sni` |
-| **Nginx** | `rewrite-target` (when it's a prefix strip, capture groups included — other targets warn), `backend-protocol`, `enable-cors`, `proxy-body-size`, `configuration-snippet` (partial). Auth and allow/deny-list annotations warn: those routes are unprotected in compose. |
+| **Nginx** | `rewrite-target` (when it's a prefix strip, capture groups included — other targets warn), `use-regex` (a literal prefix plus a trailing wildcard becomes a prefix match; other regexes warn and fall back to their literal prefix, which lets extra paths through), `backend-protocol`, `enable-cors`, `proxy-body-size`, `configuration-snippet` (partial). Auth, allow/deny-list and client-cert (`auth-tls-secret`) annotations warn: those routes are unprotected in compose. |
 | **Traefik** | Backend scheme from the Service (`service.serversscheme`, port 443 or an `https*` port name — `router.tls` is router-side TLS, which Caddy does anyway), `router.middlewares` → strip prefix for StripPrefix `Middleware`s found in the manifests. Other middlewares warn, auth ones loudly. Standard Ingress path rules. |
 
 HAProxy is built into the helmfile2compose distribution. Nginx and Traefik are extensions — install them with [dekube-manager](https://manager.dekube.io/docs/) or drop the `.py` file in your `extensions/` directory.
