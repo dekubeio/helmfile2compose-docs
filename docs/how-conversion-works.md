@@ -49,7 +49,7 @@ services:
       DATABASE_URL: "postgres://db:5432/myapp"
 ```
 
-Replicas are dropped. You're on one machine. Jobs get `restart: on-failure` so they run once and stop. Resource limits (`cpu`, `memory`) are translated to `deploy.resources.limits` (a `null` limit is dropped). Readiness/liveness probes become `healthcheck` entries (exec, httpGet via `wget`, tcpSocket via `nc -z` with a bash `/dev/tcp` fallback — an image with none of those tools, distroless for one, fails its healthcheck; override it). nerdctl ignores both — Docker Compose enforces them.
+Replicas are dropped. You're on one machine. Jobs get `restart: on-failure` so they run once and stop. Resource limits (`cpu`, `memory`) are translated to `deploy.resources.limits` (a `null` limit is dropped). Readiness/liveness probes become `healthcheck` entries (exec, httpGet via `wget` then `curl` then a bash `/dev/tcp` request, tcpSocket via `nc -z` with a bash `/dev/tcp` fallback — an image with none of those tools, distroless for one, fails its healthcheck; override it). nerdctl ignores both — Docker Compose enforces them.
 
 When both `env` and `envFrom` set a variable, `env` wins, and among `envFrom` sources the last one wins — Kubernetes' order. `$(VAR)` references in `command`, `args` and env values are expanded the way kubelet does (`$$(VAR)` stays a literal `$(VAR)`), and every other `$` in the command is escaped so compose hands it to the container untouched.
 
