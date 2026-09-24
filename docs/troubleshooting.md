@@ -97,18 +97,26 @@ ingress_types:
   nginx-dmz: nginx
 ```
 
-Without this mapping, helmfile2compose won't recognize the class and the Ingress is skipped.
+Without this mapping, a custom class is only matched through the annotations of a loaded rewriter (nginx, traefik, `haproxy.org/*`) — otherwise the Ingress is skipped.
 
 5. If your controller isn't listed above (Contour, Ambassador, Istio, AWS ALB...), basic `host`/`path`/`backend` routing still works, but controller-specific annotations won't translate. Consider [writing a rewriter](https://docs.dekube.io/extend/extensions/writing-rewriters/).
 
 ---
+
+## An extension fails to load
+
+```
+Error: failed to load extension .dekube/extensions/cert_manager.py: ModuleNotFoundError: No module named 'cryptography'
+```
+
+The run stops with exit code 1 and writes nothing — converting without the extension would silently produce a wrong stack. Install the missing dependency (`pip install cryptography` here), fix or remove the file, or disable it with `extensions: {<name>: {enabled: false}}` if it loads but you don't want it to run.
 
 ## Exit codes
 
 | Code | Meaning |
 |------|---------|
 | `0` | Success |
-| `1` | Fatal error (bad config, missing helmfile, extension conflict) |
+| `1` | Fatal error (bad config, missing helmfile, an extension that fails to load, extension conflict) |
 | `2` | Empty output — no services generated (everything excluded or no convertible manifests) |
 
 Useful for `generate-compose.sh` or CI: `python3 helmfile2compose.py ... || exit $?`

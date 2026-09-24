@@ -49,7 +49,11 @@ services:
       DATABASE_URL: "postgres://db:5432/myapp"
 ```
 
-Replicas are dropped. You're on one machine. Jobs get `restart: on-failure` so they run once and stop. Resource limits (`cpu`, `memory`) are translated to `deploy.resources.limits`. Readiness/liveness probes become `healthcheck` entries (exec, httpGet, tcpSocket). nerdctl ignores both — Docker Compose enforces them.
+Replicas are dropped. You're on one machine. Jobs get `restart: on-failure` so they run once and stop. Resource limits (`cpu`, `memory`) are translated to `deploy.resources.limits` (a `null` limit is dropped). Readiness/liveness probes become `healthcheck` entries (exec, httpGet via `wget`, tcpSocket via `nc -z` with a bash `/dev/tcp` fallback — an image with none of those tools, distroless for one, fails its healthcheck; override it). nerdctl ignores both — Docker Compose enforces them.
+
+When both `env` and `envFrom` set a variable, `env` wins, and among `envFrom` sources the last one wins — Kubernetes' order. `$(VAR)` references in `command`, `args` and env values are expanded the way kubelet does (`$$(VAR)` stays a literal `$(VAR)`), and every other `$` in the command is escaped so compose hands it to the container untouched.
+
+Services of type NodePort publish their `nodePort`, LoadBalancer ones their `port`; UDP ports keep `/udp`, and SCTP (which compose can't do) is published as TCP with a warning.
 
 ## ConfigMaps
 
@@ -73,13 +77,13 @@ services:
       LOG_LEVEL: "info"
 ```
 
-**As files** (volume mount) — written to disk and bind-mounted. This is how config files like `nginx.conf` or `application.yaml` typically travel. Both `data` (text) and `binaryData` (base64-encoded binary, e.g. keystores, protobuf) are supported.
+**As files** (volume mount) — written to disk and bind-mounted. This is how config files like `nginx.conf` or `application.yaml` typically travel. Both `data` (text) and `binaryData` (base64-encoded binary, e.g. keystores, protobuf) are supported. A mount that lists `items` gets its own `configmaps/<name>_<hash>/` directory with just those keys. File modes follow `defaultMode` / `items[].mode` (default `0644`) — so a `0755` script is executable — but owner read-write and group/other read are always kept: the files belong to your host user, and a `0400` would lock out a container running as anyone else.
 
 Everything is inlined into `compose.yml` rather than using `env_file:` — what you see is what you get.
 
 ## Secrets
 
-Same mechanics as ConfigMaps. The interesting case is when a Secret *doesn't exist* in the rendered output — an operator was supposed to create it, or Helm's `lookup` tried to fetch it from a cluster that isn't there. When this happens, the engine logs a warning to stderr (`secretKeyRef '<name>/<key>' on <workload> could not be resolved`) and drops the env var entirely — no placeholder, no value. Grep your conversion output for `could not be resolved` to catch these.
+Same mechanics as ConfigMaps. Mounted Secret files hold the decoded bytes, so a keystore or DER certificate arrives intact; a binary value referenced as an env var can't be expressed in compose and is skipped with a warning. `envFrom` includes `stringData` keys. The interesting case is when a Secret *doesn't exist* in the rendered output — an operator was supposed to create it, or Helm's `lookup` tried to fetch it from a cluster that isn't there. When this happens, the engine logs a warning to stderr (`secretKeyRef '<name>/<key>' on <workload> could not be resolved`) and drops the env var entirely — no placeholder, no value. Grep your conversion output for `could not be resolved` to catch these.
 
 Your secrets are now plain text in a YAML file. This is what you signed up for. See [limitations — secrets](limitations.md#secrets) for the full existential crisis.
 
@@ -124,6 +128,8 @@ services:
 
 Paths are customizable in `dekube.yaml`. StatefulSet `volumeClaimTemplates` get the same treatment, registered under the key `<vct>-<sts>` (the same naming Kubernetes itself uses, minus the ordinal — compose runs one replica). An existing config with the older bare `<vct>` key still resolves, with a warning to rename it.
 
+A `subPath` mount becomes `./data/<pvc>/<subPath>`. If an older conversion already put data at the volume root and the subdirectory doesn't exist, the whole volume stays mounted and a warning tells you where to move the data. Volume types with no compose equivalent (`hostPath`, `projected`, `downwardAPI`, `csi`…) are dropped with a warning — map them yourself in `overrides:`.
+
 ## Init containers
 
 Each init container becomes a separate Compose service with `restart: on-failure`. The main service declares `depends_on` with `condition: service_completed_successfully`, so Docker Compose starts it only after init containers complete. nerdctl ignores `depends_on` — there, everything runs concurrently and converges via retries. See [limitations — startup ordering](limitations.md#startup-ordering) for details.
@@ -140,7 +146,7 @@ CRDs are resources that only exist because an operator is watching them. In Comp
 
 - **cert-manager** — generates self-signed certificates as files
 - **Keycloak** — converts realm imports into container configuration
-- **ServiceMonitor** — skipped silently (no Prometheus to scrape)
+- **ServiceMonitor** — a Prometheus service with a static scrape config generated from the ServiceMonitors
 
 Unknown CRDs are skipped with a warning. Need one handled? That's what [third-party extensions](https://docs.dekube.io/extend/extensions/) are for. The engine's [three-tier model](https://docs.dekube.io/understand/concepts/#the-emulation-boundary) explains what can and can't be emulated.
 

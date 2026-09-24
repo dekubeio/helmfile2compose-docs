@@ -38,7 +38,11 @@ Linux hostnames are limited to 63 characters. Compose uses the service name as t
 
 ### Bind mount permissions
 
-Linux file permissions — the last thing you expect to fight after converting an entire orchestrator. Handled automatically by the bundled `fix-permissions` transform — non-root containers get a `chown` init service. No manual intervention needed in most cases.
+Linux file permissions — the last thing you expect to fight after converting an entire orchestrator. Handled automatically by the bundled `fix-permissions` transform — non-root containers (`runAsUser`) and pods with an `fsGroup` get a `chown`/`chgrp` init service that runs before them, for bind mounts and named volumes alike. No manual intervention needed in most cases.
+
+### Volume types
+
+PVC, ConfigMap, Secret and emptyDir volumes convert. `hostPath`, `projected`, `downwardAPI`, `csi` and the rest are dropped with a warning — add the mount yourself in `overrides:`.
 
 ---
 
