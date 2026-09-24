@@ -93,7 +93,7 @@ distribution_version: v3.1.0
 
 ### `distribution`
 
-Select which distribution dekube-manager installs. Default: `helmfile2compose`. Use `core` for the bare engine (`dekube.py`).
+Select which distribution dekube-manager installs. Default: `helmfile2compose`. Use `engine` for the bare engine (`dekube.py`).
 
 ```yaml
 distribution: helmfile2compose
